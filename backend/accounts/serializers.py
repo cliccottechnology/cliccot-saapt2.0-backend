@@ -106,6 +106,21 @@ class LoginSerializer(serializers.Serializer):
         }
 
 
+class LoginUserSerializer(serializers.ModelSerializer):
+    """
+    Serializer for user data returned upon login.
+    """
+    class Meta:
+        model = CustomUser
+        fields = (
+            'id',
+            'username',
+            'email',
+            'phone_number',
+        )
+        read_only_fields = fields
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     """
     Serializer for viewing and updating current user profile.

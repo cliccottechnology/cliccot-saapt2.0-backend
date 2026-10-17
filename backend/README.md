@@ -132,10 +132,6 @@ Base URL: `http://127.0.0.1:8000/api/auth/`
     "phone_number": "+1234567890",
     "created_at": "2026-10-15T12:00:00Z",
     "updated_at": "2026-10-15T12:00:00Z"
-  },
-  "tokens": {
-    "refresh": "<jwt_refresh_token>",
-    "access": "<jwt_access_token>"
   }
 }
 ```
@@ -161,11 +157,7 @@ Base URL: `http://127.0.0.1:8000/api/auth/`
     "id": 1,
     "username": "johndoe",
     "email": "johndoe@example.com",
-    "first_name": "John",
-    "last_name": "Doe",
-    "phone_number": "+1234567890",
-    "created_at": "2026-10-15T12:00:00Z",
-    "updated_at": "2026-10-15T12:00:00Z"
+    "phone_number": "+1234567890"
   },
   "tokens": {
     "refresh": "<jwt_refresh_token>",
@@ -237,3 +229,5 @@ Base URL: `http://127.0.0.1:8000/api/auth/`
   "message": "Logged out successfully."
 }
 ```
+
+

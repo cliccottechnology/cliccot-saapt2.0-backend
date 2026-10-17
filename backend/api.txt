@@ -1,0 +1,25 @@
+C. Views & APIs: 
+
+students/views.py
+StudentViewSet:
+GET /api/students/: Filter by search, class, section, status, academic_year with pagination.
+POST /api/students/: Multi-part new admission form.
+GET /api/students/<id>/: Student profile.
+PUT / PATCH /api/students/<id>/: Edit profile.
+GET /api/students/stats/: Dashboard metrics (Total students, active, graduated, class breakdown).
+GET /api/students/export/: Exports filtered student list to CSV.
+GET /api/students/<id>/id-card/: Printable ID card JSON endpoint.
+POST /api/students/bulk-allocate/: Atomic relocation of selected students to a new section.
+GET, POST /api/students/<id>/academic-records/: Term marksheet records.
+ClassSectionViewSet:
+GET /api/class-sections/: List allocated classes and active student count.
+POST /api/class-sections/: Add class & section allocation.
+GET /api/class-sections/<id>/students/: List students belonging to a class-section.
+SchoolClassViewSet, SectionViewSet, AcademicYearViewSet: Dropdown lookups.
+D. URLs: 
+
+students/urls.py
+ and 
+
+core/urls.py
+Integrated into api/ with router endpoints and media file serving for uploaded photos and certificates.

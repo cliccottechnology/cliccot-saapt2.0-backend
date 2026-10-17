@@ -70,13 +70,56 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database (Default: SQLite for local setup)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database Configuration
+# Supports PostgreSQL (via DB_* env vars or DATABASE_URL) with fallback to SQLite
+DB_ENGINE = os.getenv('DB_ENGINE', '').lower()
+
+if DB_ENGINE in ['postgres', 'postgresql', 'django.db.backends.postgresql']:
+    db_options = {}
+
+    db_schema = os.getenv('DB_SCHEMA')
+    if db_schema:
+        db_options['options'] = f"-c search_path={db_schema},public"
+
+    db_sslmode = os.getenv('DB_SSLMODE')
+    if db_sslmode:
+        db_options['sslmode'] = db_sslmode
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', 'postgres'),
+            'USER': os.getenv('DB_USER', 'postgres'),
+            'PASSWORD': os.getenv('DB_PASSWORD', ''),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+            'OPTIONS': db_options,
+        }
     }
-}
+elif os.getenv('DATABASE_URL'):
+    from urllib.parse import urlparse, unquote
+    url = urlparse(os.getenv('DATABASE_URL'))
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': unquote(url.path.lstrip('/')),
+            'USER': unquote(url.username or ''),
+            'PASSWORD': unquote(url.password or ''),
+            'HOST': url.hostname or 'localhost',
+            'PORT': str(url.port or '5432'),
+        }
+    }
+    if 'sslmode=' in url.query:
+        for param in url.query.split('&'):
+            if param.startswith('sslmode='):
+                DATABASES['default']['OPTIONS'] = {'sslmode': param.split('=')[1]}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'

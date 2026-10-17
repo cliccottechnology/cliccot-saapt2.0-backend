@@ -9,6 +9,7 @@ from .models import CustomUser
 from .serializers import (
     RegisterSerializer,
     LoginSerializer,
+    LoginUserSerializer,
     UserProfileSerializer,
     ChangePasswordSerializer,
 )
@@ -17,7 +18,7 @@ class RegisterView(generics.CreateAPIView):
     """
     API endpoint for user registration.
     Accessible by anyone (AllowAny).
-    Returns user details along with JWT tokens.
+    Returns user details upon registration.
     """
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
@@ -28,17 +29,10 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        # Generate JWT tokens for instant login upon registration
-        refresh = RefreshToken.for_user(user)
-
         return Response(
             {
                 "message": "User registered successfully.",
                 "user": UserProfileSerializer(user).data,
-                "tokens": {
-                    "refresh": str(refresh),
-                    "access": str(refresh.access_token),
-                }
             },
             status=status.HTTP_201_CREATED
         )
@@ -62,7 +56,7 @@ class LoginView(APIView):
         return Response(
             {
                 "message": "Login successful.",
-                "user": UserProfileSerializer(user).data,
+                "user": LoginUserSerializer(user).data,
                 "tokens": tokens,
             },
             status=status.HTTP_200_OK

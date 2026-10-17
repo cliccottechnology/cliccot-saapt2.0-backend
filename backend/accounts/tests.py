@@ -22,9 +22,13 @@ class AuthTests(APITestCase):
     def test_registration_success(self):
         response = self.client.post(self.register_url, self.user_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIn('tokens', response.data)
-        self.assertIn('access', response.data['tokens'])
+        self.assertEqual(response.data['message'], "User registered successfully.")
+        self.assertIn('user', response.data)
+        self.assertNotIn('tokens', response.data)
         self.assertEqual(response.data['user']['email'], 'johndoe@example.com')
+        self.assertEqual(response.data['user']['username'], 'johndoe')
+        self.assertIn('created_at', response.data['user'])
+        self.assertIn('updated_at', response.data['user'])
         self.assertTrue(CustomUser.objects.filter(email='johndoe@example.com').exists())
 
     def test_registration_password_mismatch(self):
@@ -45,8 +49,13 @@ class AuthTests(APITestCase):
         }
         response = self.client.post(self.login_url, login_payload, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['message'], "Login successful.")
         self.assertIn('tokens', response.data)
         self.assertIn('access', response.data['tokens'])
+        self.assertIn('refresh', response.data['tokens'])
+        self.assertEqual(response.data['user']['username'], 'johndoe')
+        self.assertEqual(response.data['user']['email'], 'johndoe@example.com')
+        self.assertNotIn('created_at', response.data['user'])
 
     def test_login_with_email_success(self):
         # First register
@@ -72,8 +81,13 @@ class AuthTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_authenticated_profile_access(self):
-        reg_response = self.client.post(self.register_url, self.user_data, format='json')
-        access_token = reg_response.data['tokens']['access']
+        self.client.post(self.register_url, self.user_data, format='json')
+        login_payload = {
+            'username_or_email': 'johndoe',
+            'password': 'SecurePassword123!',
+        }
+        login_res = self.client.post(self.login_url, login_payload, format='json')
+        access_token = login_res.data['tokens']['access']
 
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
         response = self.client.get(self.profile_url)
