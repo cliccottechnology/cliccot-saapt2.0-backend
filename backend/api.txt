@@ -1,25 +1,38 @@
-C. Views & APIs: 
+C. Views & Action-Based APIs: 
 
-students/views.py
-StudentViewSet:
-GET /api/students/: Filter by search, class, section, status, academic_year with pagination.
-POST /api/students/: Multi-part new admission form.
-GET /api/students/<id>/: Student profile.
-PUT / PATCH /api/students/<id>/: Edit profile.
-GET /api/students/stats/: Dashboard metrics (Total students, active, graduated, class breakdown).
-GET /api/students/export/: Exports filtered student list to CSV.
-GET /api/students/<id>/id-card/: Printable ID card JSON endpoint.
-POST /api/students/bulk-allocate/: Atomic relocation of selected students to a new section.
-GET, POST /api/students/<id>/academic-records/: Term marksheet records.
-ClassSectionViewSet:
-GET /api/class-sections/: List allocated classes and active student count.
-POST /api/class-sections/: Add class & section allocation.
-GET /api/class-sections/<id>/students/: List students belonging to a class-section.
-SchoolClassViewSet, SectionViewSet, AcademicYearViewSet: Dropdown lookups.
-D. URLs: 
+1. Students:
+POST        /api/add-student/                  Multi-part new admission form
+GET         /api/list-students/                Filter by search, class, section, status, academic_year with pagination
+GET         /api/view-student/<id>/            Student profile details
+PUT / PATCH /api/edit-student/<id>/            Edit profile
+DELETE      /api/delete-student/<id>/          Delete student record
+GET         /api/student-stats/                Dashboard metrics (Total students, active, graduated, class breakdown)
+GET         /api/export-students/              Exports filtered student list to CSV
+GET         /api/student-id-card/<id>/         Printable ID card JSON endpoint
+POST        /api/bulk-allocate-students/       Atomic relocation of selected students to a new section
+GET         /api/get-academic-records/<id>/    Term marksheet records
+POST        /api/add-academic-record/<id>/     Add student mark
 
-students/urls.py
- and 
+2. Class & Section Allocation:
+GET         /api/list-class-sections/          List allocated classes and active student count
+POST        /api/add-class-section/            Add class & section allocation
+GET         /api/view-class-section/<id>/      View class section
+PUT / PATCH /api/edit-class-section/<id>/      Edit class section
+DELETE      /api/delete-class-section/<id>/    Delete class section
+GET         /api/class-section-students/<id>/  List students belonging to a class-section
 
-core/urls.py
-Integrated into api/ with router endpoints and media file serving for uploaded photos and certificates.
+3. Master Lookups:
+GET         /api/get-classes/                  Dropdown class list
+GET         /api/get-sections/                 Dropdown section list
+GET         /api/get-academic-years/           Dropdown academic years list
+
+4. Authentication:
+POST        /api/auth/register/                Register staff user
+POST        /api/auth/login/                   Login via username or email
+POST        /api/auth/forgot-password/         Step 1: Ask email & send 6-digit OTP
+POST        /api/auth/verify-otp/              Step 2: Verify OTP & get reset token
+POST        /api/auth/reset-password/          Step 3: Set new password & confirm
+GET         /api/auth/get-profile/             Get logged-in user profile
+POST        /api/auth/change-password/         Change password
+POST        /api/auth/refresh-token/           Refresh access token
+POST        /api/auth/logout/                  Blacklist refresh token

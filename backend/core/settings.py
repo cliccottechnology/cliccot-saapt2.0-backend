@@ -5,6 +5,7 @@ Django settings for core project.
 from datetime import timedelta
 from pathlib import Path
 import os
+import sys
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -74,7 +75,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Supports PostgreSQL (via DB_* env vars or DATABASE_URL) with fallback to SQLite
 DB_ENGINE = os.getenv('DB_ENGINE', '').lower()
 
-if DB_ENGINE in ['postgres', 'postgresql', 'django.db.backends.postgresql']:
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+elif DB_ENGINE in ['postgres', 'postgresql', 'django.db.backends.postgresql']:
     db_options = {}
 
     db_schema = os.getenv('DB_SCHEMA')
@@ -193,3 +201,17 @@ CORS_ALLOWED_ORIGINS = [
         'http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173'
     ).split(',') if origin.strip()
 ]
+
+# Email Configuration (for OTP and notifications)
+EMAIL_BACKEND = os.getenv(
+    'EMAIL_BACKEND',
+    'django.core.mail.backends.smtp.EmailBackend' if os.getenv('EMAIL_HOST_USER') else 'django.core.mail.backends.console.EmailBackend'
+)
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER or 'noreply@saapt.com')
+

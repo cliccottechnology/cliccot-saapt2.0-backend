@@ -97,7 +97,11 @@ Base URL: `http://127.0.0.1:8000/api/auth/`
 | `/api/auth/token/refresh/` | `POST` | No | Refresh an expired access token |
 | `/api/auth/me/` | `GET`, `PUT`, `PATCH` | **Yes (Bearer Token)** | View or update current user profile |
 | `/api/auth/logout/` | `POST` | **Yes (Bearer Token)** | Invalidate/blacklist refresh token |
-| `/api/auth/change-password/` | `POST` | **Yes (Bearer Token)** | Update user password |
+| `/api/auth/change-password/` | `POST` | **Yes (Bearer Token)** | Update user password (authenticated) |
+| `/api/auth/forgot-password/` | `POST` | No | Request 6-digit OTP sent to registered email |
+| `/api/auth/verify-otp/` | `POST` | No | Verify 6-digit OTP code & receive reset token |
+| `/api/auth/reset-password/` | `POST` | No | Set new password and confirmation using OTP / reset token |
+| `/api/auth/forgot-password/ui/` | `GET` | No | Interactive browser UI to test the Forgot Password flow |
 
 ---
 
