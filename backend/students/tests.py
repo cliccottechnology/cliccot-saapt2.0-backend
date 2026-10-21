@@ -247,3 +247,29 @@ class StudentModuleTests(APITestCase):
         self.assertEqual(response.data['section_name'], "C")
         self.assertEqual(response.data['academic_year_name'], "2026-27")
         self.assertEqual(response.data['class_name'], "Class 9")
+
+    def test_new_admission_with_explicit_class_and_section_strings(self):
+        """Test creating student passing 'class' and 'section' as distinct string fields"""
+        url = reverse('student-list')
+        payload = {
+            "full_name": "Meera Krishnan",
+            "date_of_birth": "2013-11-25",
+            "gender": "Female",
+            "blood_group": "AB+",
+            "academic_year": "2026-27",
+            "class": "Class 8",
+            "section": "B",
+            "father_name": "Krishnan S",
+            "mobile_number": "98400 77777"
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['class'], "Class 8")
+        self.assertEqual(response.data['section'], "B")
+        self.assertEqual(response.data['full_name'], "Meera Krishnan")
+
+        # Verify DB entry
+        student = Student.objects.get(full_name="Meera Krishnan")
+        self.assertEqual(student.class_section.school_class.name, "Class 8")
+        self.assertEqual(student.class_section.section.name, "B")
+        self.assertEqual(student.academic_year.year_name, "2026-27")

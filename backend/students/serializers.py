@@ -265,6 +265,12 @@ class StudentListSerializer(serializers.ModelSerializer):
             'admission_date'
         ]
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['class'] = instance.class_name
+        ret['section'] = instance.section_name
+        return ret
+
 
 class StudentDetailSerializer(serializers.ModelSerializer):
     """
@@ -316,13 +322,19 @@ class StudentDetailSerializer(serializers.ModelSerializer):
             'updated_at'
         ]
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['class'] = instance.class_name
+        ret['section'] = instance.section_name
+        return ret
+
 
 class StudentCreateUpdateSerializer(serializers.ModelSerializer):
     """
     Serializer for New Admission dialog (Step 1, Step 2, Step 3) and Profile Editing.
     Supports atomic creation of ParentGuardian record and file attachments.
     Accepts academic_year as string ('2026-27') or integer ID.
-    Accepts section as string ('A') or class_section as ('Class 8-A' or ID).
+    Accepts class as string ('Class 8' or '8') and section as string ('A').
     """
     academic_year = AcademicYearRelatedField(required=True)
     class_section = ClassSectionRelatedField(required=False, allow_null=True)
@@ -379,6 +391,16 @@ class StudentCreateUpdateSerializer(serializers.ModelSerializer):
             'academic_year': {'required': True},
         }
 
+    def to_internal_value(self, data):
+        # Allow passing 'class' directly as key in form/JSON
+        if hasattr(data, 'copy'):
+            data = data.copy()
+        else:
+            data = dict(data)
+        if 'class' in data and not data.get('school_class'):
+            data['school_class'] = data.get('class')
+        return super().to_internal_value(data)
+
     def _resolve_class_section(self, validated_data, instance=None):
         section_str = validated_data.pop('section', '').strip()
         class_str = (validated_data.pop('school_class', '') or validated_data.pop('class_name', '')).strip()
@@ -402,7 +424,9 @@ class StudentCreateUpdateSerializer(serializers.ModelSerializer):
                     models.Q(name__iexact=f"Class {class_str}")
                 ).first()
                 if not cls_obj:
-                    cls_obj, _ = SchoolClass.objects.get_or_create(name=class_str)
+                    cls_obj, _ = SchoolClass.objects.get_or_create(
+                        name=f"Class {class_str}" if class_str.isdigit() else class_str
+                    )
 
             if cls_obj and sec_obj and ay:
                 cs_obj, _ = ClassSection.objects.get_or_create(
@@ -462,6 +486,8 @@ class StudentCreateUpdateSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
+        ret['class'] = instance.class_name
+        ret['section'] = instance.section_name
         ret['academic_year_name'] = instance.academic_year_name
         ret['section_name'] = instance.section_name
         ret['class_name'] = instance.class_name
