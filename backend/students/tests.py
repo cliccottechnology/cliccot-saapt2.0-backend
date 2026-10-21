@@ -273,3 +273,40 @@ class StudentModuleTests(APITestCase):
         self.assertEqual(student.class_section.school_class.name, "Class 8")
         self.assertEqual(student.class_section.section.name, "B")
         self.assertEqual(student.academic_year.year_name, "2026-27")
+
+    def test_student_response_contains_all_dialog_fields(self):
+        """Test that student detail API returns all fields required by the 3-step Student Details dialog"""
+        url = reverse('student-detail', kwargs={'pk': self.student.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Step 1: Student Details
+        self.assertIn('full_name', response.data)
+        self.assertIn('date_of_birth', response.data)
+        self.assertIn('gender', response.data)
+        self.assertIn('blood_group', response.data)
+        self.assertIn('academic_year', response.data)
+        self.assertIn('class', response.data)
+        self.assertIn('section', response.data)
+        self.assertIn('roll_number', response.data)
+        self.assertIn('admission_number', response.data)
+        self.assertIn('admission_date', response.data)
+        self.assertIn('status', response.data)
+        self.assertIn('bus_route_info', response.data)
+
+        # Step 2: Parent / Guardian
+        self.assertIn('father_name', response.data)
+        self.assertIn('mother_name', response.data)
+        self.assertIn('relation', response.data)
+        self.assertIn('mobile_number', response.data)
+        self.assertIn('alternate_mobile', response.data)
+        self.assertIn('parent_email', response.data)
+        self.assertIn('address', response.data)
+        self.assertEqual(response.data['father_name'], 'Ramesh Kumar')
+        self.assertEqual(response.data['mobile_number'], '98400 12345')
+
+        # Step 3: Documents
+        self.assertIn('student_photo', response.data)
+        self.assertIn('birth_certificate', response.data)
+        self.assertIn('transfer_certificate', response.data)
+        self.assertIn('aadhaar_card', response.data)

@@ -267,8 +267,37 @@ class StudentListSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
+        # Step 1: Student details
+        ret['academic_year'] = instance.academic_year_name
+        ret['academic_year_name'] = instance.academic_year_name
         ret['class'] = instance.class_name
+        ret['school_class'] = instance.class_name
+        ret['class_name'] = instance.class_name
         ret['section'] = instance.section_name
+        ret['section_name'] = instance.section_name
+        ret['class_display'] = instance.class_display
+        ret['bus_route_info'] = instance.bus_route_info or ""
+
+        # Step 2: Parent / Guardian details (flattened at root)
+        parent = instance.parent_guardian
+        ret['father_name'] = parent.father_name if parent else ""
+        ret['mother_name'] = parent.mother_name if parent else ""
+        ret['relation'] = parent.relation if parent else "Father"
+        ret['mobile_number'] = parent.mobile_number if parent else ""
+        ret['alternate_mobile'] = parent.alternate_mobile if parent else ""
+        ret['parent_email'] = parent.email if parent else ""
+        ret['email'] = parent.email if parent else ""
+        ret['address'] = parent.address if parent else ""
+
+        # Step 3: Document file URLs
+        request = self.context.get('request')
+        for doc_field in ['student_photo', 'birth_certificate', 'transfer_certificate', 'aadhaar_card']:
+            doc = getattr(instance, doc_field, None)
+            if doc and hasattr(doc, 'url'):
+                ret[doc_field] = request.build_absolute_uri(doc.url) if request else doc.url
+            else:
+                ret[doc_field] = None
+
         return ret
 
 
@@ -324,8 +353,27 @@ class StudentDetailSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
+        # Step 1: Student details
+        ret['academic_year'] = instance.academic_year_name
+        ret['academic_year_name'] = instance.academic_year_name
         ret['class'] = instance.class_name
+        ret['school_class'] = instance.class_name
+        ret['class_name'] = instance.class_name
         ret['section'] = instance.section_name
+        ret['section_name'] = instance.section_name
+        ret['class_display'] = instance.class_display
+        ret['bus_route_info'] = instance.bus_route_info or ""
+
+        # Step 2: Parent / Guardian details (flattened at root)
+        parent = instance.parent_guardian
+        ret['father_name'] = parent.father_name if parent else ""
+        ret['mother_name'] = parent.mother_name if parent else ""
+        ret['relation'] = parent.relation if parent else "Father"
+        ret['mobile_number'] = parent.mobile_number if parent else ""
+        ret['alternate_mobile'] = parent.alternate_mobile if parent else ""
+        ret['parent_email'] = parent.email if parent else ""
+        ret['email'] = parent.email if parent else ""
+        ret['address'] = parent.address if parent else ""
         return ret
 
 
@@ -486,12 +534,37 @@ class StudentCreateUpdateSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        ret['class'] = instance.class_name
-        ret['section'] = instance.section_name
+        # Step 1: Student details
+        ret['academic_year'] = instance.academic_year_name
         ret['academic_year_name'] = instance.academic_year_name
-        ret['section_name'] = instance.section_name
+        ret['class'] = instance.class_name
+        ret['school_class'] = instance.class_name
         ret['class_name'] = instance.class_name
+        ret['section'] = instance.section_name
+        ret['section_name'] = instance.section_name
         ret['class_display'] = instance.class_display
+        ret['bus_route_info'] = instance.bus_route_info or ""
+
+        # Step 2: Parent / Guardian details (flattened at root)
+        parent = instance.parent_guardian
+        ret['father_name'] = parent.father_name if parent else ""
+        ret['mother_name'] = parent.mother_name if parent else ""
+        ret['relation'] = parent.relation if parent else "Father"
+        ret['mobile_number'] = parent.mobile_number if parent else ""
+        ret['alternate_mobile'] = parent.alternate_mobile if parent else ""
+        ret['parent_email'] = parent.email if parent else ""
+        ret['email'] = parent.email if parent else ""
+        ret['address'] = parent.address if parent else ""
+
+        # Step 3: Document file URLs
+        request = self.context.get('request')
+        for doc_field in ['student_photo', 'birth_certificate', 'transfer_certificate', 'aadhaar_card']:
+            doc = getattr(instance, doc_field, None)
+            if doc and hasattr(doc, 'url'):
+                ret[doc_field] = request.build_absolute_uri(doc.url) if request else doc.url
+            else:
+                ret[doc_field] = None
+
         return ret
 
 
