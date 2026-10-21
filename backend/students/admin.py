@@ -3,6 +3,7 @@ from .models import (
     AcademicYear,
     SchoolClass,
     Section,
+    BloodGroup,
     ClassSection,
     ParentGuardian,
     Student,
@@ -28,6 +29,12 @@ class SchoolClassAdmin(admin.ModelAdmin):
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+
+
+@admin.register(BloodGroup)
+class BloodGroupAdmin(admin.ModelAdmin):
+    list_display = ('name', 'code', 'description', 'created_at')
+    search_fields = ('name', 'code')
 
 
 @admin.register(ClassSection)

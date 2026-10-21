@@ -7,6 +7,7 @@ from students.models import (
     AcademicYear,
     SchoolClass,
     Section,
+    BloodGroup,
     ClassSection,
     ParentGuardian,
     Student,
@@ -310,3 +311,112 @@ class StudentModuleTests(APITestCase):
         self.assertIn('birth_certificate', response.data)
         self.assertIn('transfer_certificate', response.data)
         self.assertIn('aadhaar_card', response.data)
+
+    def test_class_crud(self):
+        """Test full CRUD operations for SchoolClass"""
+        # 1. Create
+        create_res = self.client.post(reverse('add_class'), {"name": "Class 11", "code": "11", "numeric_order": 11})
+        self.assertEqual(create_res.status_code, status.HTTP_201_CREATED)
+        class_id = create_res.data['id']
+
+        # 2. List
+        list_res = self.client.get(reverse('list_classes'))
+        self.assertEqual(list_res.status_code, status.HTTP_200_OK)
+
+        # 3. View
+        view_res = self.client.get(reverse('view_class', kwargs={'pk': class_id}))
+        self.assertEqual(view_res.status_code, status.HTTP_200_OK)
+        self.assertEqual(view_res.data['name'], "Class 11")
+
+        # 4. Edit
+        edit_res = self.client.put(reverse('edit_class', kwargs={'pk': class_id}), {"name": "Class 11 - Science", "code": "11-SCI", "numeric_order": 11})
+        self.assertEqual(edit_res.status_code, status.HTTP_200_OK)
+        self.assertEqual(edit_res.data['name'], "Class 11 - Science")
+
+        # 5. Delete
+        del_res = self.client.delete(reverse('delete_class', kwargs={'pk': class_id}))
+        self.assertEqual(del_res.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_section_crud(self):
+        """Test full CRUD operations for Section"""
+        # 1. Create
+        create_res = self.client.post(reverse('add_section'), {"name": "D"})
+        self.assertEqual(create_res.status_code, status.HTTP_201_CREATED)
+        sec_id = create_res.data['id']
+
+        # 2. List
+        list_res = self.client.get(reverse('list_sections'))
+        self.assertEqual(list_res.status_code, status.HTTP_200_OK)
+
+        # 3. View
+        view_res = self.client.get(reverse('view_section', kwargs={'pk': sec_id}))
+        self.assertEqual(view_res.status_code, status.HTTP_200_OK)
+        self.assertEqual(view_res.data['name'], "D")
+
+        # 4. Edit
+        edit_res = self.client.patch(reverse('edit_section', kwargs={'pk': sec_id}), {"name": "Delta"})
+        self.assertEqual(edit_res.status_code, status.HTTP_200_OK)
+        self.assertEqual(edit_res.data['name'], "Delta")
+
+        # 5. Delete
+        del_res = self.client.delete(reverse('delete_section', kwargs={'pk': sec_id}))
+        self.assertEqual(del_res.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_academic_year_crud(self):
+        """Test full CRUD operations for AcademicYear"""
+        # 1. Create
+        create_res = self.client.post(reverse('add_academic_year'), {
+            "year_name": "2027-28",
+            "start_date": "2027-06-01",
+            "end_date": "2028-04-30",
+            "is_current": False
+        })
+        self.assertEqual(create_res.status_code, status.HTTP_201_CREATED)
+        ay_id = create_res.data['id']
+
+        # 2. List
+        list_res = self.client.get(reverse('list_academic_years'))
+        self.assertEqual(list_res.status_code, status.HTTP_200_OK)
+
+        # 3. View
+        view_res = self.client.get(reverse('view_academic_year', kwargs={'pk': ay_id}))
+        self.assertEqual(view_res.status_code, status.HTTP_200_OK)
+        self.assertEqual(view_res.data['year_name'], "2027-28")
+
+        # 4. Edit
+        edit_res = self.client.patch(reverse('edit_academic_year', kwargs={'pk': ay_id}), {"is_current": True})
+        self.assertEqual(edit_res.status_code, status.HTTP_200_OK)
+        self.assertTrue(edit_res.data['is_current'])
+
+        # 5. Delete
+        del_res = self.client.delete(reverse('delete_academic_year', kwargs={'pk': ay_id}))
+        self.assertEqual(del_res.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_blood_group_crud(self):
+        """Test full CRUD operations for BloodGroup"""
+        # 1. Create
+        create_res = self.client.post(reverse('add_blood_group'), {
+            "name": "Bombay O+",
+            "code": "HH",
+            "description": "Rare Bombay blood phenotype"
+        })
+        self.assertEqual(create_res.status_code, status.HTTP_201_CREATED)
+        bg_id = create_res.data['id']
+
+        # 2. List
+        list_res = self.client.get(reverse('list_blood_groups'))
+        self.assertEqual(list_res.status_code, status.HTTP_200_OK)
+
+        # 3. View
+        view_res = self.client.get(reverse('view_blood_group', kwargs={'pk': bg_id}))
+        self.assertEqual(view_res.status_code, status.HTTP_200_OK)
+        self.assertEqual(view_res.data['name'], "Bombay O+")
+
+        # 4. Edit
+        edit_res = self.client.patch(reverse('edit_blood_group', kwargs={'pk': bg_id}), {"description": "Updated Description"})
+        self.assertEqual(edit_res.status_code, status.HTTP_200_OK)
+        self.assertEqual(edit_res.data['description'], "Updated Description")
+
+        # 5. Delete
+        del_res = self.client.delete(reverse('delete_blood_group', kwargs={'pk': bg_id}))
+        self.assertEqual(del_res.status_code, status.HTTP_204_NO_CONTENT)

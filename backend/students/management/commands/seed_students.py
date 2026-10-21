@@ -5,6 +5,7 @@ from students.models import (
     AcademicYear,
     SchoolClass,
     Section,
+    BloodGroup,
     ClassSection,
     ParentGuardian,
     Student,
@@ -51,6 +52,10 @@ class Command(BaseCommand):
             for sname in ["A", "B", "C"]:
                 sec, _ = Section.objects.get_or_create(name=sname)
                 sec_map[sname] = sec
+
+            # 3b. Blood Groups
+            for bg_name in ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-', 'Unknown']:
+                BloodGroup.objects.get_or_create(name=bg_name)
 
             # 4. Class & Section Allocations (Page 9)
             allocations = [

@@ -4,6 +4,7 @@ from .models import (
     AcademicYear,
     SchoolClass,
     Section,
+    BloodGroup,
     ClassSection,
     ParentGuardian,
     Student,
@@ -149,6 +150,12 @@ class SectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Section
         fields = ['id', 'name']
+
+
+class BloodGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BloodGroup
+        fields = ['id', 'name', 'code', 'description', 'created_at']
 
 
 class ClassSectionSerializer(serializers.ModelSerializer):

@@ -12,6 +12,7 @@ from .models import (
     AcademicYear,
     SchoolClass,
     Section,
+    BloodGroup,
     ClassSection,
     ParentGuardian,
     Student,
@@ -21,6 +22,7 @@ from .serializers import (
     AcademicYearSerializer,
     SchoolClassSerializer,
     SectionSerializer,
+    BloodGroupSerializer,
     ClassSectionSerializer,
     StudentListSerializer,
     StudentDetailSerializer,
@@ -58,6 +60,16 @@ class SectionViewSet(viewsets.ModelViewSet):
     """
     queryset = Section.objects.all()
     serializer_class = SectionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None
+
+
+class BloodGroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for managing Blood Groups (A+, B+, O-, etc.).
+    """
+    queryset = BloodGroup.objects.all().order_by('name')
+    serializer_class = BloodGroupSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = None
 

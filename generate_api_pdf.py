@@ -10,11 +10,11 @@ html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SAAPT 2.0 - Action-Based REST API Collection</title>
+<title>SAAPT 2.0 - Action-Based REST API Reference</title>
 <style>
   @page {
     size: A4;
-    margin: 15mm 15mm 15mm 15mm;
+    margin: 14mm 14mm 14mm 14mm;
     @bottom-right {
       content: counter(page);
     }
@@ -24,8 +24,8 @@ html_content = """<!DOCTYPE html>
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
     color: #1e293b;
     background: #ffffff;
-    font-size: 11pt;
-    line-height: 1.5;
+    font-size: 10pt;
+    line-height: 1.45;
   }
   .page-break {
     page-break-before: always;
@@ -33,76 +33,109 @@ html_content = """<!DOCTYPE html>
   
   /* Cover Page */
   .cover {
-    height: 92vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 40px 30px;
+    padding: 36px 30px;
     border: 2px solid #2563eb;
-    border-radius: 16px;
+    border-radius: 14px;
     background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
   }
   .cover-header {
     border-bottom: 3px solid #2563eb;
-    padding-bottom: 24px;
+    padding-bottom: 20px;
   }
   .cover-badge {
     display: inline-block;
-    padding: 6px 14px;
+    padding: 5px 14px;
     background: #2563eb;
     color: #ffffff;
-    font-size: 11pt;
+    font-size: 10pt;
     font-weight: 700;
     border-radius: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
   .cover-title {
-    font-size: 32pt;
+    font-size: 28pt;
     font-weight: 800;
     color: #0f172a;
     line-height: 1.15;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .cover-subtitle {
-    font-size: 15pt;
+    font-size: 13pt;
     color: #475569;
     font-weight: 400;
   }
   .cover-info {
-    margin: 40px 0;
+    margin: 24px 0;
   }
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 14px;
     background: #ffffff;
-    padding: 24px;
-    border-radius: 12px;
+    padding: 20px;
+    border-radius: 10px;
     border: 1px solid #cbd5e1;
   }
   .info-item {
-    font-size: 10.5pt;
+    font-size: 10pt;
   }
   .info-label {
     font-weight: 700;
     color: #64748b;
     text-transform: uppercase;
-    font-size: 9pt;
+    font-size: 8pt;
     letter-spacing: 0.5px;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
   .info-val {
     color: #0f172a;
     font-weight: 600;
   }
+
+  .modules-box {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 14px;
+  }
+  .modules-box h3 {
+    font-size: 11pt;
+    color: #0f172a;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .modules-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 16px;
+    font-size: 9.5pt;
+    color: #334155;
+  }
+  .modules-list li {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .modules-list li::before {
+    content: "✓";
+    color: #16a34a;
+    font-weight: 800;
+  }
+
   .cover-footer {
     border-top: 1px solid #cbd5e1;
-    padding-top: 16px;
+    padding-top: 14px;
     display: flex;
     justify-content: space-between;
-    font-size: 9.5pt;
+    font-size: 9pt;
     color: #64748b;
   }
 
@@ -110,15 +143,15 @@ html_content = """<!DOCTYPE html>
   .section-header {
     background: #0f172a;
     color: #ffffff;
-    padding: 14px 20px;
+    padding: 12px 18px;
     border-radius: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   .section-title {
-    font-size: 16pt;
+    font-size: 14pt;
     font-weight: 700;
   }
   .section-badge {
@@ -126,44 +159,44 @@ html_content = """<!DOCTYPE html>
     color: #fff;
     padding: 4px 10px;
     border-radius: 6px;
-    font-size: 9pt;
+    font-size: 8.5pt;
     font-weight: 600;
   }
 
   /* API Card */
   .api-card {
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 24px;
+    border-radius: 8px;
+    margin-bottom: 18px;
     background: #ffffff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     page-break-inside: avoid;
     overflow: hidden;
   }
   .api-card-header {
-    padding: 12px 18px;
+    padding: 10px 14px;
     background: #f8fafc;
     border-bottom: 1px solid #e2e8f0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
   }
   .api-endpoint {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 12pt;
+    font-size: 10.5pt;
     font-weight: 700;
     color: #0f172a;
   }
   .method {
     display: inline-block;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 9pt;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 8pt;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -177,11 +210,11 @@ html_content = """<!DOCTYPE html>
 
   .api-meta {
     display: flex;
-    gap: 8px;
+    gap: 6px;
   }
   .meta-tag {
-    font-size: 8.5pt;
-    padding: 3px 8px;
+    font-size: 8pt;
+    padding: 2px 7px;
     border-radius: 4px;
     font-weight: 600;
   }
@@ -190,20 +223,20 @@ html_content = """<!DOCTYPE html>
   .meta-format { background: #f1f5f9; color: #475569; }
 
   .api-card-body {
-    padding: 16px 18px;
+    padding: 12px 14px;
   }
   .api-desc {
     color: #475569;
-    font-size: 10.5pt;
-    margin-bottom: 14px;
+    font-size: 9.5pt;
+    margin-bottom: 10px;
   }
   
   .block-title {
-    font-size: 9.5pt;
+    font-size: 8.5pt;
     font-weight: 700;
     text-transform: uppercase;
     color: #64748b;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -213,19 +246,19 @@ html_content = """<!DOCTYPE html>
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 14px;
-    font-size: 9.5pt;
+    margin-bottom: 10px;
+    font-size: 9pt;
   }
   th {
     background: #f1f5f9;
     color: #334155;
     text-align: left;
-    padding: 6px 10px;
+    padding: 5px 8px;
     border: 1px solid #cbd5e1;
     font-weight: 600;
   }
   td {
-    padding: 6px 10px;
+    padding: 5px 8px;
     border: 1px solid #e2e8f0;
     color: #1e293b;
   }
@@ -239,7 +272,7 @@ html_content = """<!DOCTYPE html>
   }
   .field-type {
     font-family: 'Consolas', monospace;
-    font-size: 8.5pt;
+    font-size: 8pt;
     color: #64748b;
   }
   .field-req {
@@ -254,20 +287,29 @@ html_content = """<!DOCTYPE html>
   pre {
     background: #0f172a;
     color: #e2e8f0;
-    padding: 12px 14px;
-    border-radius: 8px;
+    padding: 10px 12px;
+    border-radius: 6px;
     font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 9pt;
+    font-size: 8.5pt;
     line-height: 1.4;
     overflow-x: auto;
-    margin-bottom: 14px;
-    border-left: 4px solid #3b82f6;
+    margin-bottom: 10px;
+    border-left: 3px solid #3b82f6;
   }
   
   .json-key { color: #93c5fd; }
   .json-str { color: #86efac; }
   .json-num { color: #fde047; }
   .json-bool { color: #f472b6; }
+
+  .subheading {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 16px 0 8px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #cbd5e1;
+  }
 </style>
 </head>
 <body>
@@ -276,8 +318,8 @@ html_content = """<!DOCTYPE html>
 <div class="cover">
   <div class="cover-header">
     <span class="cover-badge">Developer API Reference</span>
-    <h1 class="cover-title">SAAPT 2.0 Backend<br>Action-Based API Collection</h1>
-    <p class="cover-subtitle">Clear, Explicit Action Endpoints (add-student, delete-student, list-students, etc.)</p>
+    <h1 class="cover-title">SAAPT 2.0 Backend<br>Action-Based REST API Reference</h1>
+    <p class="cover-subtitle">Complete Documentation: Classes, Sections, Academic Years, Blood Groups, Students & Auth</p>
   </div>
 
   <div class="cover-info">
@@ -288,18 +330,18 @@ html_content = """<!DOCTYPE html>
       </div>
       <div class="info-item">
         <div class="info-label">API Style</div>
-        <div class="info-val">Action-Oriented (add-student, edit-student, delete-student)</div>
+        <div class="info-val">Explicit Action Endpoints + Standard REST Conventions</div>
       </div>
       <div class="info-item">
         <div class="info-label">Authentication</div>
-        <div class="info-val">JSON Web Token (JWT Bearer Token)</div>
+        <div class="info-val">JSON Web Token (Authorization: Bearer &lt;token&gt;)</div>
       </div>
       <div class="info-item">
         <div class="info-label">Database</div>
-        <div class="info-val">PostgreSQL (Supabase) / SQLite</div>
+        <div class="info-val">PostgreSQL (Supabase) / SQLite Development</div>
       </div>
       <div class="info-item">
-        <div class="info-label">Content Types</div>
+        <div class="info-label">Supported Payload Formats</div>
         <div class="info-val">application/json & multipart/form-data</div>
       </div>
       <div class="info-item">
@@ -307,19 +349,707 @@ html_content = """<!DOCTYPE html>
         <div class="info-val">Version 2.0 • Updated October 2026</div>
       </div>
     </div>
+
+    <div class="modules-box">
+      <h3>Documented Functional Modules (42 Endpoints)</h3>
+      <ul class="modules-list">
+        <li><strong>Module 1:</strong> Student Management CRUD (9 Endpoints)</li>
+        <li><strong>Module 2:</strong> Class & Section Allocation (6 Endpoints)</li>
+        <li><strong>Module 3:</strong> School Class Master CRUD (6 Endpoints)</li>
+        <li><strong>Module 4:</strong> Section Master CRUD (6 Endpoints)</li>
+        <li><strong>Module 5:</strong> Academic Year Master CRUD (6 Endpoints)</li>
+        <li><strong>Module 6:</strong> Blood Group Master CRUD (6 Endpoints)</li>
+        <li><strong>Module 7:</strong> Authentication & Security (4 Endpoints)</li>
+      </ul>
+    </div>
   </div>
 
   <div class="cover-footer">
     <span>Cliccot Technology — SAAPT 2.0 School ERP</span>
-    <span>Intuitive Developer Integration Reference</span>
+    <span>Intuitive Developer & Frontend Integration Guide</span>
   </div>
 </div>
 
 <div class="page-break"></div>
 
-<!-- SECTION 1: STUDENT MANAGEMENT -->
+<!-- QUICK REFERENCE DIRECTORY -->
 <div class="section-header">
-  <div class="section-title">1. Student Management (Action-Based APIs)</div>
+  <div class="section-title">Quick Endpoint Directory</div>
+  <div class="section-badge">All Action URLs</div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Operation</th>
+      <th>Method</th>
+      <th>Action Endpoint URL</th>
+      <th>Standard Router Equivalent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- School Class -->
+    <tr>
+      <td rowspan="5"><strong>School Class</strong></td>
+      <td>List / Lookup Classes</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/list-classes/</code> or <code>/api/get-classes/</code></td>
+      <td><code>/api/classes/</code></td>
+    </tr>
+    <tr>
+      <td>Create New Class</td>
+      <td><span class="method method-post">POST</span></td>
+      <td><code>/api/add-class/</code></td>
+      <td><code>/api/classes/</code></td>
+    </tr>
+    <tr>
+      <td>View Class Details</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/view-class/&lt;id&gt;/</code></td>
+      <td><code>/api/classes/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Edit / Update Class</td>
+      <td><span class="method method-put">PUT</span> <span class="method method-patch">PATCH</span></td>
+      <td><code>/api/edit-class/&lt;id&gt;/</code></td>
+      <td><code>/api/classes/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Delete Class</td>
+      <td><span class="method method-delete">DELETE</span></td>
+      <td><code>/api/delete-class/&lt;id&gt;/</code></td>
+      <td><code>/api/classes/&lt;id&gt;/</code></td>
+    </tr>
+
+    <!-- Section -->
+    <tr>
+      <td rowspan="5"><strong>Section Master</strong></td>
+      <td>List / Lookup Sections</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/list-sections/</code> or <code>/api/get-sections/</code></td>
+      <td><code>/api/sections/</code></td>
+    </tr>
+    <tr>
+      <td>Create Section</td>
+      <td><span class="method method-post">POST</span></td>
+      <td><code>/api/add-section/</code></td>
+      <td><code>/api/sections/</code></td>
+    </tr>
+    <tr>
+      <td>View Section Details</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/view-section/&lt;id&gt;/</code></td>
+      <td><code>/api/sections/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Edit / Update Section</td>
+      <td><span class="method method-put">PUT</span> <span class="method method-patch">PATCH</span></td>
+      <td><code>/api/edit-section/&lt;id&gt;/</code></td>
+      <td><code>/api/sections/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Delete Section</td>
+      <td><span class="method method-delete">DELETE</span></td>
+      <td><code>/api/delete-section/&lt;id&gt;/</code></td>
+      <td><code>/api/sections/&lt;id&gt;/</code></td>
+    </tr>
+
+    <!-- Academic Year -->
+    <tr>
+      <td rowspan="5"><strong>Academic Year</strong></td>
+      <td>List / Lookup Academic Years</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/list-academic-years/</code> or <code>/api/get-academic-years/</code></td>
+      <td><code>/api/academic-years/</code></td>
+    </tr>
+    <tr>
+      <td>Create Academic Year</td>
+      <td><span class="method method-post">POST</span></td>
+      <td><code>/api/add-academic-year/</code></td>
+      <td><code>/api/academic-years/</code></td>
+    </tr>
+    <tr>
+      <td>View Academic Year Details</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/view-academic-year/&lt;id&gt;/</code></td>
+      <td><code>/api/academic-years/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Edit / Update Academic Year</td>
+      <td><span class="method method-put">PUT</span> <span class="method method-patch">PATCH</span></td>
+      <td><code>/api/edit-academic-year/&lt;id&gt;/</code></td>
+      <td><code>/api/academic-years/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Delete Academic Year</td>
+      <td><span class="method method-delete">DELETE</span></td>
+      <td><code>/api/delete-academic-year/&lt;id&gt;/</code></td>
+      <td><code>/api/academic-years/&lt;id&gt;/</code></td>
+    </tr>
+
+    <!-- Blood Group -->
+    <tr>
+      <td rowspan="5"><strong>Blood Group</strong></td>
+      <td>List / Lookup Blood Groups</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/list-blood-groups/</code> or <code>/api/get-blood-groups/</code></td>
+      <td><code>/api/blood-groups/</code></td>
+    </tr>
+    <tr>
+      <td>Create Blood Group</td>
+      <td><span class="method method-post">POST</span></td>
+      <td><code>/api/add-blood-group/</code></td>
+      <td><code>/api/blood-groups/</code></td>
+    </tr>
+    <tr>
+      <td>View Blood Group Details</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/view-blood-group/&lt;id&gt;/</code></td>
+      <td><code>/api/blood-groups/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Edit / Update Blood Group</td>
+      <td><span class="method method-put">PUT</span> <span class="method method-patch">PATCH</span></td>
+      <td><code>/api/edit-blood-group/&lt;id&gt;/</code></td>
+      <td><code>/api/blood-groups/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Delete Blood Group</td>
+      <td><span class="method method-delete">DELETE</span></td>
+      <td><code>/api/delete-blood-group/&lt;id&gt;/</code></td>
+      <td><code>/api/blood-groups/&lt;id&gt;/</code></td>
+    </tr>
+
+    <!-- Students -->
+    <tr>
+      <td rowspan="6"><strong>Student Management</strong></td>
+      <td>Add Student (All Steps 1-3)</td>
+      <td><span class="method method-post">POST</span></td>
+      <td><code>/api/add-student/</code></td>
+      <td><code>/api/students/</code></td>
+    </tr>
+    <tr>
+      <td>List Students (Filter, Search, Page)</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/list-students/</code></td>
+      <td><code>/api/students/</code></td>
+    </tr>
+    <tr>
+      <td>View Student Complete Profile</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/view-student/&lt;id&gt;/</code></td>
+      <td><code>/api/students/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Edit Student</td>
+      <td><span class="method method-put">PUT</span> <span class="method method-patch">PATCH</span></td>
+      <td><code>/api/edit-student/&lt;id&gt;/</code></td>
+      <td><code>/api/students/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Delete Student</td>
+      <td><span class="method method-delete">DELETE</span></td>
+      <td><code>/api/delete-student/&lt;id&gt;/</code></td>
+      <td><code>/api/students/&lt;id&gt;/</code></td>
+    </tr>
+    <tr>
+      <td>Student Dashboard Statistics</td>
+      <td><span class="method method-get">GET</span></td>
+      <td><code>/api/student-stats/</code></td>
+      <td><code>/api/students/stats/</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 1: SCHOOL CLASS MASTER CRUD -->
+<div class="section-header">
+  <div class="section-title">1. School Class Master CRUD APIs</div>
+  <div class="section-badge">Base: /api/</div>
+</div>
+
+<div class="api-desc">
+  The School Class module manages standard academic grades (e.g. "Class 6", "Class 7", "Class 8"). Classes can be referenced by integer ID or string name when creating student profiles and section allocations.
+</div>
+
+<!-- API: List Classes -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-get">GET</span>
+      <span>/api/list-classes/ &nbsp;or&nbsp; /api/get-classes/ &nbsp;or&nbsp; /api/classes/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+      <span class="meta-tag meta-format">application/json</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">Retrieves all registered school classes ordered by numerical sequence. Ideal for populating UI dropdown selectors and master data tables.</div>
+    <div class="block-title">Response (200 OK)</div>
+    <pre>[
+  {
+    <span class="json-key">"id"</span>: <span class="json-num">1</span>,
+    <span class="json-key">"name"</span>: <span class="json-str">"Class 6"</span>,
+    <span class="json-key">"code"</span>: <span class="json-str">"CLS-6"</span>,
+    <span class="json-key">"numeric_order"</span>: <span class="json-num">6</span>
+  },
+  {
+    <span class="json-key">"id"</span>: <span class="json-num">2</span>,
+    <span class="json-key">"name"</span>: <span class="json-str">"Class 7"</span>,
+    <span class="json-key">"code"</span>: <span class="json-str">"CLS-7"</span>,
+    <span class="json-key">"numeric_order"</span>: <span class="json-num">7</span>
+  },
+  {
+    <span class="json-key">"id"</span>: <span class="json-num">3</span>,
+    <span class="json-key">"name"</span>: <span class="json-str">"Class 8"</span>,
+    <span class="json-key">"code"</span>: <span class="json-str">"CLS-8"</span>,
+    <span class="json-key">"numeric_order"</span>: <span class="json-num">8</span>
+  }
+]</pre>
+  </div>
+</div>
+
+<!-- API: Add Class -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-post">POST</span>
+      <span>/api/add-class/ &nbsp;or&nbsp; /api/classes/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+      <span class="meta-tag meta-format">application/json</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">Creates a new class entry. <code>name</code> is required and must be unique. <code>code</code> and <code>numeric_order</code> are optional.</div>
+    <div class="block-title">Request Body Parameters</div>
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="field-name">name</span></td><td><span class="field-type">string</span></td><td><span class="field-req">Required</span></td><td>Class display name, e.g. <code>"Class 11"</code> or <code>"Grade 11"</code> (Max 50 chars, Unique).</td></tr>
+        <tr><td><span class="field-name">code</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Unique shortcode, e.g. <code>"CLS-11"</code> (Max 20 chars).</td></tr>
+        <tr><td><span class="field-name">numeric_order</span></td><td><span class="field-type">integer</span></td><td><span class="field-opt">Optional</span></td><td>Sorting rank, e.g. <code>11</code> (Default: 0).</td></tr>
+      </tbody>
+    </table>
+    <div class="block-title">Request Body Example</div>
+    <pre>{
+  <span class="json-key">"name"</span>: <span class="json-str">"Class 11"</span>,
+  <span class="json-key">"code"</span>: <span class="json-str">"CLS-11"</span>,
+  <span class="json-key">"numeric_order"</span>: <span class="json-num">11</span>
+}</pre>
+    <div class="block-title">Response (201 Created)</div>
+    <pre>{
+  <span class="json-key">"id"</span>: <span class="json-num">6</span>,
+  <span class="json-key">"name"</span>: <span class="json-str">"Class 11"</span>,
+  <span class="json-key">"code"</span>: <span class="json-str">"CLS-11"</span>,
+  <span class="json-key">"numeric_order"</span>: <span class="json-num">11</span>
+}</pre>
+  </div>
+</div>
+
+<!-- API: View, Edit, Delete Class -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-get">GET</span>
+      <span class="method method-put">PUT</span>
+      <span class="method method-patch">PATCH</span>
+      <span class="method method-delete">DELETE</span>
+      <span>/api/view-class/&lt;id&gt;/ &nbsp;|&nbsp; /api/edit-class/&lt;id&gt;/ &nbsp;|&nbsp; /api/delete-class/&lt;id&gt;/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">
+      <strong>Retrieve:</strong> <code>GET /api/view-class/6/</code> returns the class object (200 OK).<br>
+      <strong>Update:</strong> <code>PUT /api/edit-class/6/</code> or <code>PATCH /api/edit-class/6/</code> modifies fields (200 OK).<br>
+      <strong>Delete:</strong> <code>DELETE /api/delete-class/6/</code> permanently deletes the class record (204 No Content).
+    </div>
+    <div class="block-title">Edit Request Body (PATCH Example)</div>
+    <pre>{
+  <span class="json-key">"name"</span>: <span class="json-str">"Class 11 - Senior"</span>
+}</pre>
+    <div class="block-title">Edit Response (200 OK)</div>
+    <pre>{
+  <span class="json-key">"id"</span>: <span class="json-num">6</span>,
+  <span class="json-key">"name"</span>: <span class="json-str">"Class 11 - Senior"</span>,
+  <span class="json-key">"code"</span>: <span class="json-str">"CLS-11"</span>,
+  <span class="json-key">"numeric_order"</span>: <span class="json-num">11</span>
+}</pre>
+    <div class="block-title">Delete Response</div>
+    <pre><span class="json-num">204</span> No Content (Empty Response Body)</pre>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 2: SECTION MASTER CRUD -->
+<div class="section-header">
+  <div class="section-title">2. Section Master CRUD APIs</div>
+  <div class="section-badge">Base: /api/</div>
+</div>
+
+<div class="api-desc">
+  The Section module manages classroom section letters (e.g. "A", "B", "C", "D"). Sections can be referenced by integer ID or string character in student forms and class-section allocations.
+</div>
+
+<!-- API: List Sections -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-get">GET</span>
+      <span>/api/list-sections/ &nbsp;or&nbsp; /api/get-sections/ &nbsp;or&nbsp; /api/sections/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+      <span class="meta-tag meta-format">application/json</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">Retrieves all section letters. Used to populate Section dropdowns across the application.</div>
+    <div class="block-title">Response (200 OK)</div>
+    <pre>[
+  { <span class="json-key">"id"</span>: <span class="json-num">1</span>, <span class="json-key">"name"</span>: <span class="json-str">"A"</span> },
+  { <span class="json-key">"id"</span>: <span class="json-num">2</span>, <span class="json-key">"name"</span>: <span class="json-str">"B"</span> },
+  { <span class="json-key">"id"</span>: <span class="json-num">3</span>, <span class="json-key">"name"</span>: <span class="json-str">"C"</span> },
+  { <span class="json-key">"id"</span>: <span class="json-num">4</span>, <span class="json-key">"name"</span>: <span class="json-str">"D"</span> }
+]</pre>
+  </div>
+</div>
+
+<!-- API: Add Section -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-post">POST</span>
+      <span>/api/add-section/ &nbsp;or&nbsp; /api/sections/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+      <span class="meta-tag meta-format">application/json</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">Creates a new section. <code>name</code> is required and must be unique (e.g. "E").</div>
+    <div class="block-title">Request Body Parameters</div>
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="field-name">name</span></td><td><span class="field-type">string</span></td><td><span class="field-req">Required</span></td><td>Section identifier, e.g. <code>"E"</code> or <code>"Blue"</code> (Max 10 chars, Unique).</td></tr>
+      </tbody>
+    </table>
+    <div class="block-title">Request Body Example</div>
+    <pre>{
+  <span class="json-key">"name"</span>: <span class="json-str">"E"</span>
+}</pre>
+    <div class="block-title">Response (201 Created)</div>
+    <pre>{
+  <span class="json-key">"id"</span>: <span class="json-num">5</span>,
+  <span class="json-key">"name"</span>: <span class="json-str">"E"</span>
+}</pre>
+  </div>
+</div>
+
+<!-- API: View, Edit, Delete Section -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-get">GET</span>
+      <span class="method method-put">PUT</span>
+      <span class="method method-patch">PATCH</span>
+      <span class="method method-delete">DELETE</span>
+      <span>/api/view-section/&lt;id&gt;/ &nbsp;|&nbsp; /api/edit-section/&lt;id&gt;/ &nbsp;|&nbsp; /api/delete-section/&lt;id&gt;/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">
+      <strong>Retrieve:</strong> <code>GET /api/view-section/5/</code> returns section details (200 OK).<br>
+      <strong>Update:</strong> <code>PUT /api/edit-section/5/</code> or <code>PATCH /api/edit-section/5/</code> modifies section name (200 OK).<br>
+      <strong>Delete:</strong> <code>DELETE /api/delete-section/5/</code> removes the section (204 No Content).
+    </div>
+    <div class="block-title">Edit Request Body</div>
+    <pre>{
+  <span class="json-key">"name"</span>: <span class="json-str">"Rose"</span>
+}</pre>
+    <div class="block-title">Edit Response (200 OK)</div>
+    <pre>{
+  <span class="json-key">"id"</span>: <span class="json-num">5</span>,
+  <span class="json-key">"name"</span>: <span class="json-str">"Rose"</span>
+}</pre>
+    <div class="block-title">Delete Response</div>
+    <pre><span class="json-num">204</span> No Content (Empty Response Body)</pre>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 3: ACADEMIC YEAR MASTER CRUD -->
+<div class="section-header">
+  <div class="section-title">3. Academic Year Master CRUD APIs</div>
+  <div class="section-badge">Base: /api/</div>
+</div>
+
+<div class="api-desc">
+  The Academic Year module defines school terms/sessions (e.g. "2025-2026", "2026-2027"). Supports marking the active current year and date boundary validation. Can be specified by integer ID or string name in student endpoints.
+</div>
+
+<!-- API: List Academic Years -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-get">GET</span>
+      <span>/api/list-academic-years/ &nbsp;or&nbsp; /api/get-academic-years/ &nbsp;or&nbsp; /api/academic-years/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+      <span class="meta-tag meta-format">application/json</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">Retrieves all academic years. Identifies which session is flagged as the current active school year.</div>
+    <div class="block-title">Response (200 OK)</div>
+    <pre>[
+  {
+    <span class="json-key">"id"</span>: <span class="json-num">1</span>,
+    <span class="json-key">"year_name"</span>: <span class="json-str">"2025-2026"</span>,
+    <span class="json-key">"start_date"</span>: <span class="json-str">"2025-06-01"</span>,
+    <span class="json-key">"end_date"</span>: <span class="json-str">"2026-04-30"</span>,
+    <span class="json-key">"is_current"</span>: <span class="json-bool">false</span>
+  },
+  {
+    <span class="json-key">"id"</span>: <span class="json-num">2</span>,
+    <span class="json-key">"year_name"</span>: <span class="json-str">"2026-2027"</span>,
+    <span class="json-key">"start_date"</span>: <span class="json-str">"2026-06-01"</span>,
+    <span class="json-key">"end_date"</span>: <span class="json-str">"2027-04-30"</span>,
+    <span class="json-key">"is_current"</span>: <span class="json-bool">true</span>
+  }
+]</pre>
+  </div>
+</div>
+
+<!-- API: Add Academic Year -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-post">POST</span>
+      <span>/api/add-academic-year/ &nbsp;or&nbsp; /api/academic-years/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+      <span class="meta-tag meta-format">application/json</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">Creates a new academic year session. Setting <code>is_current</code> to <code>true</code> marks this as the default active year.</div>
+    <div class="block-title">Request Body Parameters</div>
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="field-name">year_name</span></td><td><span class="field-type">string</span></td><td><span class="field-req">Required</span></td><td>Unique name, e.g. <code>"2027-2028"</code> (Max 20 chars, Unique).</td></tr>
+        <tr><td><span class="field-name">start_date</span></td><td><span class="field-type">date (YYYY-MM-DD)</span></td><td><span class="field-opt">Optional</span></td><td>Opening date of academic session.</td></tr>
+        <tr><td><span class="field-name">end_date</span></td><td><span class="field-type">date (YYYY-MM-DD)</span></td><td><span class="field-opt">Optional</span></td><td>Closing date of academic session.</td></tr>
+        <tr><td><span class="field-name">is_current</span></td><td><span class="field-type">boolean</span></td><td><span class="field-opt">Optional</span></td><td>Flag indicating if this is the active school year (Default: false).</td></tr>
+      </tbody>
+    </table>
+    <div class="block-title">Request Body Example</div>
+    <pre>{
+  <span class="json-key">"year_name"</span>: <span class="json-str">"2027-2028"</span>,
+  <span class="json-key">"start_date"</span>: <span class="json-str">"2027-06-01"</span>,
+  <span class="json-key">"end_date"</span>: <span class="json-str">"2028-04-30"</span>,
+  <span class="json-key">"is_current"</span>: <span class="json-bool">false</span>
+}</pre>
+    <div class="block-title">Response (201 Created)</div>
+    <pre>{
+  <span class="json-key">"id"</span>: <span class="json-num">3</span>,
+  <span class="json-key">"year_name"</span>: <span class="json-str">"2027-2028"</span>,
+  <span class="json-key">"start_date"</span>: <span class="json-str">"2027-06-01"</span>,
+  <span class="json-key">"end_date"</span>: <span class="json-str">"2028-04-30"</span>,
+  <span class="json-key">"is_current"</span>: <span class="json-bool">false</span>
+}</pre>
+  </div>
+</div>
+
+<!-- API: View, Edit, Delete Academic Year -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-get">GET</span>
+      <span class="method method-put">PUT</span>
+      <span class="method method-patch">PATCH</span>
+      <span class="method method-delete">DELETE</span>
+      <span>/api/view-academic-year/&lt;id&gt;/ &nbsp;|&nbsp; /api/edit-academic-year/&lt;id&gt;/ &nbsp;|&nbsp; /api/delete-academic-year/&lt;id&gt;/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">
+      <strong>Retrieve:</strong> <code>GET /api/view-academic-year/2/</code> returns the session details (200 OK).<br>
+      <strong>Update:</strong> <code>PUT /api/edit-academic-year/2/</code> or <code>PATCH /api/edit-academic-year/2/</code> updates dates or flags (200 OK).<br>
+      <strong>Delete:</strong> <code>DELETE /api/delete-academic-year/3/</code> removes an unused academic year (204 No Content).
+    </div>
+    <div class="block-title">Edit Request Body (PATCH Example)</div>
+    <pre>{
+  <span class="json-key">"is_current"</span>: <span class="json-bool">true</span>
+}</pre>
+    <div class="block-title">Edit Response (200 OK)</div>
+    <pre>{
+  <span class="json-key">"id"</span>: <span class="json-num">2</span>,
+  <span class="json-key">"year_name"</span>: <span class="json-str">"2026-2027"</span>,
+  <span class="json-key">"start_date"</span>: <span class="json-str">"2026-06-01"</span>,
+  <span class="json-key">"end_date"</span>: <span class="json-str">"2027-04-30"</span>,
+  <span class="json-key">"is_current"</span>: <span class="json-bool">true</span>
+}</pre>
+    <div class="block-title">Delete Response</div>
+    <pre><span class="json-num">204</span> No Content (Empty Response Body)</pre>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 4: BLOOD GROUP MASTER CRUD -->
+<div class="section-header">
+  <div class="section-title">4. Blood Group Master CRUD APIs</div>
+  <div class="section-badge">Base: /api/</div>
+</div>
+
+<div class="api-desc">
+  The Blood Group module manages medical blood typing groups (e.g. "A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-", "Unknown"). Supports full CRUD and populates emergency contact & student medical registries.
+</div>
+
+<!-- API: List Blood Groups -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-get">GET</span>
+      <span>/api/list-blood-groups/ &nbsp;or&nbsp; /api/get-blood-groups/ &nbsp;or&nbsp; /api/blood-groups/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+      <span class="meta-tag meta-format">application/json</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">Retrieves all registered blood groups with medical codes and descriptions for UI dropdown selection.</div>
+    <div class="block-title">Response (200 OK)</div>
+    <pre>[
+  {
+    <span class="json-key">"id"</span>: <span class="json-num">1</span>,
+    <span class="json-key">"name"</span>: <span class="json-str">"A+"</span>,
+    <span class="json-key">"code"</span>: <span class="json-str">"A_POS"</span>,
+    <span class="json-key">"description"</span>: <span class="json-str">"A Positive"</span>,
+    <span class="json-key">"created_at"</span>: <span class="json-str">"2026-10-21T06:40:00Z"</span>
+  },
+  {
+    <span class="json-key">"id"</span>: <span class="json-num">5</span>,
+    <span class="json-key">"name"</span>: <span class="json-str">"O+"</span>,
+    <span class="json-key">"code"</span>: <span class="json-str">"O_POS"</span>,
+    <span class="json-key">"description"</span>: <span class="json-str">"O Positive"</span>,
+    <span class="json-key">"created_at"</span>: <span class="json-str">"2026-10-21T06:40:00Z"</span>
+  },
+  {
+    <span class="json-key">"id"</span>: <span class="json-num">6</span>,
+    <span class="json-key">"name"</span>: <span class="json-str">"O-"</span>,
+    <span class="json-key">"code"</span>: <span class="json-str">"O_NEG"</span>,
+    <span class="json-key">"description"</span>: <span class="json-str">"O Negative (Universal Donor)"</span>,
+    <span class="json-key">"created_at"</span>: <span class="json-str">"2026-10-21T06:40:00Z"</span>
+  }
+]</pre>
+  </div>
+</div>
+
+<!-- API: Add Blood Group -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-post">POST</span>
+      <span>/api/add-blood-group/ &nbsp;or&nbsp; /api/blood-groups/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+      <span class="meta-tag meta-format">application/json</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">Creates a new blood group entry. <code>name</code> is required and unique.</div>
+    <div class="block-title">Request Body Parameters</div>
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="field-name">name</span></td><td><span class="field-type">string</span></td><td><span class="field-req">Required</span></td><td>Blood group name, e.g. <code>"Bombay Blood Group"</code> or <code>"Rh-null"</code> (Max 20 chars, Unique).</td></tr>
+        <tr><td><span class="field-name">code</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Medical short identifier, e.g. <code>"HH_POS"</code> (Max 10 chars).</td></tr>
+        <tr><td><span class="field-name">description</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Clinical notes or donor details (Max 100 chars).</td></tr>
+      </tbody>
+    </table>
+    <div class="block-title">Request Body Example</div>
+    <pre>{
+  <span class="json-key">"name"</span>: <span class="json-str">"Bombay Blood Group"</span>,
+  <span class="json-key">"code"</span>: <span class="json-str">"HH_POS"</span>,
+  <span class="json-key">"description"</span>: <span class="json-str">"Rare Bombay phenotype"</span>
+}</pre>
+    <div class="block-title">Response (201 Created)</div>
+    <pre>{
+  <span class="json-key">"id"</span>: <span class="json-num">10</span>,
+  <span class="json-key">"name"</span>: <span class="json-str">"Bombay Blood Group"</span>,
+  <span class="json-key">"code"</span>: <span class="json-str">"HH_POS"</span>,
+  <span class="json-key">"description"</span>: <span class="json-str">"Rare Bombay phenotype"</span>,
+  <span class="json-key">"created_at"</span>: <span class="json-str">"2026-10-21T07:15:00Z"</span>
+}</pre>
+  </div>
+</div>
+
+<!-- API: View, Edit, Delete Blood Group -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-get">GET</span>
+      <span class="method method-put">PUT</span>
+      <span class="method method-patch">PATCH</span>
+      <span class="method method-delete">DELETE</span>
+      <span>/api/view-blood-group/&lt;id&gt;/ &nbsp;|&nbsp; /api/edit-blood-group/&lt;id&gt;/ &nbsp;|&nbsp; /api/delete-blood-group/&lt;id&gt;/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">
+      <strong>Retrieve:</strong> <code>GET /api/view-blood-group/5/</code> returns blood group object (200 OK).<br>
+      <strong>Update:</strong> <code>PUT /api/edit-blood-group/5/</code> or <code>PATCH /api/edit-blood-group/5/</code> updates description/code (200 OK).<br>
+      <strong>Delete:</strong> <code>DELETE /api/delete-blood-group/10/</code> removes the blood group (204 No Content).
+    </div>
+    <div class="block-title">Edit Request Body (PATCH Example)</div>
+    <pre>{
+  <span class="json-key">"description"</span>: <span class="json-str">"O Positive - Universal RBC Recipient A/B/O"</span>
+}</pre>
+    <div class="block-title">Edit Response (200 OK)</div>
+    <pre>{
+  <span class="json-key">"id"</span>: <span class="json-num">5</span>,
+  <span class="json-key">"name"</span>: <span class="json-str">"O+"</span>,
+  <span class="json-key">"code"</span>: <span class="json-str">"O_POS"</span>,
+  <span class="json-key">"description"</span>: <span class="json-str">"O Positive - Universal RBC Recipient A/B/O"</span>,
+  <span class="json-key">"created_at"</span>: <span class="json-str">"2026-10-21T06:40:00Z"</span>
+}</pre>
+    <div class="block-title">Delete Response</div>
+    <pre><span class="json-num">204</span> No Content (Empty Response Body)</pre>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 5: STUDENT MANAGEMENT -->
+<div class="section-header">
+  <div class="section-title">5. Student Management (Action-Based APIs)</div>
   <div class="section-badge">Base: /api/</div>
 </div>
 
@@ -328,284 +1058,162 @@ html_content = """<!DOCTYPE html>
   <div class="api-card-header">
     <div class="api-endpoint">
       <span class="method method-post">POST</span>
-      <span>/api/add-student/</span>
+      <span>/api/add-student/ &nbsp;or&nbsp; /api/students/</span>
     </div>
     <div class="api-meta">
       <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
-      <span class="meta-tag meta-format">multipart/form-data</span>
+      <span class="meta-tag meta-format">multipart/form-data & application/json</span>
     </div>
   </div>
   <div class="api-card-body">
-    <div class="api-desc"><strong>Add Student API:</strong> Creates a new student admission record with personal details, parent information, and uploaded certificates.</div>
-    <div class="block-title">Form Data Request Parameters</div>
+    <div class="api-desc">
+      <strong>Add Student API:</strong> Creates a complete student admission profile. Supports both string names and integer IDs for <code>class</code>, <code>section</code>, and <code>academic_year</code>. Automatically creates parent/guardian records and returns all 3 steps' fields in the response.
+    </div>
+    <div class="block-title">Request Parameters (Form Data / JSON)</div>
     <table>
       <thead>
-        <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+        <tr><th>Field</th><th>Type</th><th>Required</th><th>Description / Example</th></tr>
       </thead>
       <tbody>
-        <tr><td><span class="field-name">full_name</span></td><td><span class="field-type">string</span></td><td><span class="field-req">Required</span></td><td>Full legal name of the student.</td></tr>
-        <tr><td><span class="field-name">date_of_birth</span></td><td><span class="field-type">date (YYYY-MM-DD)</span></td><td><span class="field-req">Required</span></td><td>Student date of birth.</td></tr>
-        <tr><td><span class="field-name">gender</span></td><td><span class="field-type">string</span></td><td><span class="field-req">Required</span></td><td><code>Male</code>, <code>Female</code>, or <code>Other</code>.</td></tr>
-        <tr><td><span class="field-name">academic_year</span></td><td><span class="field-type">integer (ID)</span></td><td><span class="field-req">Required</span></td><td>Academic year ID (e.g. 1).</td></tr>
-        <tr><td><span class="field-name">class_section</span></td><td><span class="field-type">integer (ID)</span></td><td><span class="field-opt">Optional</span></td><td>Assigned class section ID.</td></tr>
-        <tr><td><span class="field-name">roll_number</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Class roll number.</td></tr>
-        <tr><td><span class="field-name">blood_group</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>e.g. <code>O+</code>, <code>A+</code>, <code>B+</code>.</td></tr>
-        <tr><td><span class="field-name">father_name</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Parent / Father name.</td></tr>
-        <tr><td><span class="field-name">mother_name</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Mother name.</td></tr>
-        <tr><td><span class="field-name">mobile_number</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Primary contact phone number.</td></tr>
-        <tr><td><span class="field-name">parent_email</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Parent email address.</td></tr>
-        <tr><td><span class="field-name">address</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Full residential address.</td></tr>
-        <tr><td><span class="field-name">student_photo</span></td><td><span class="field-type">file</span></td><td><span class="field-opt">Optional</span></td><td>Passport size photograph.</td></tr>
+        <tr><td><span class="field-name">full_name</span></td><td><span class="field-type">string</span></td><td><span class="field-req">Required</span></td><td>Full legal name of the student (Max 200 chars).</td></tr>
+        <tr><td><span class="field-name">date_of_birth</span></td><td><span class="field-type">date (YYYY-MM-DD)</span></td><td><span class="field-req">Required</span></td><td>e.g. <code>"2014-05-15"</code></td></tr>
+        <tr><td><span class="field-name">academic_year</span></td><td><span class="field-type">string / int</span></td><td><span class="field-req">Required</span></td><td>e.g. <code>"2026-2027"</code> or integer ID <code>1</code></td></tr>
+        <tr><td><span class="field-name">class</span></td><td><span class="field-type">string / int</span></td><td><span class="field-req">Required</span></td><td>e.g. <code>"Class 8"</code>, <code>"8"</code>, or integer ID <code>1</code></td></tr>
+        <tr><td><span class="field-name">section</span></td><td><span class="field-type">string / int</span></td><td><span class="field-req">Required</span></td><td>e.g. <code>"A"</code>, <code>"B"</code>, or integer ID <code>1</code></td></tr>
+        <tr><td><span class="field-name">gender</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td><code>"Male"</code>, <code>"Female"</code>, or <code>"Other"</code> (Default: Male)</td></tr>
+        <tr><td><span class="field-name">blood_group</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td><code>"A+"</code>, <code>"A-"</code>, <code>"B+"</code>, <code>"B-"</code>, <code>"O+"</code>, <code>"O-"</code>, <code>"AB+"</code>, <code>"AB-"</code>, <code>"Unknown"</code></td></tr>
+        <tr><td><span class="field-name">roll_number</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>e.g. <code>"14"</code> (Max 20 chars)</td></tr>
+        <tr><td><span class="field-name">admission_number</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Auto-generated by backend if omitted (e.g. <code>"A-1021"</code>)</td></tr>
+        <tr><td><span class="field-name">admission_date</span></td><td><span class="field-type">date</span></td><td><span class="field-opt">Optional</span></td><td>Defaults to today (YYYY-MM-DD)</td></tr>
+        <tr><td><span class="field-name">status</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td><code>"Active"</code>, <code>"Transferred"</code>, <code>"Graduated"</code>, <code>"Inactive"</code></td></tr>
+        <tr><td><span class="field-name">bus_route_info</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>e.g. <code>"Bus Route 4"</code></td></tr>
+        <tr><td><span class="field-name">father_name</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Father's full name</td></tr>
+        <tr><td><span class="field-name">mother_name</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Mother's full name</td></tr>
+        <tr><td><span class="field-name">relation</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td><code>"Father"</code>, <code>"Mother"</code>, or <code>"Guardian"</code></td></tr>
+        <tr><td><span class="field-name">mobile_number</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Primary parent phone number (e.g. <code>"9840012345"</code>)</td></tr>
+        <tr><td><span class="field-name">alternate_mobile</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Secondary contact number</td></tr>
+        <tr><td><span class="field-name">parent_email</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Parent email address</td></tr>
+        <tr><td><span class="field-name">address</span></td><td><span class="field-type">string</span></td><td><span class="field-opt">Optional</span></td><td>Residential street address</td></tr>
+        <tr><td><span class="field-name">student_photo</span></td><td><span class="field-type">file</span></td><td><span class="field-opt">Optional</span></td><td>Student passport image (.jpg, .png)</td></tr>
+        <tr><td><span class="field-name">birth_certificate</span></td><td><span class="field-type">file</span></td><td><span class="field-opt">Optional</span></td><td>Birth certificate document (.pdf, .jpg)</td></tr>
+        <tr><td><span class="field-name">transfer_certificate</span></td><td><span class="field-type">file</span></td><td><span class="field-opt">Optional</span></td><td>Transfer certificate (.pdf, .jpg)</td></tr>
+        <tr><td><span class="field-name">aadhaar_card</span></td><td><span class="field-type">file</span></td><td><span class="field-opt">Optional</span></td><td>Government ID document (.pdf, .jpg)</td></tr>
       </tbody>
     </table>
-    <div class="block-title">Response (201 Created)</div>
+    
+    <div class="block-title">Complete Response (201 Created) — All 3 Steps Included</div>
     <pre>{
-  <span class="json-key">"id"</span>: <span class="json-num">102</span>,
-  <span class="json-key">"admission_number"</span>: <span class="json-str">"SAAPT-2026-042"</span>,
-  <span class="json-key">"full_name"</span>: <span class="json-str">"Ananya Patel"</span>,
-  <span class="json-key">"status"</span>: <span class="json-str">"active"</span>,
-  <span class="json-key">"date_of_birth"</span>: <span class="json-str">"2015-09-20"</span>,
-  <span class="json-key">"gender"</span>: <span class="json-str">"Female"</span>,
-  <span class="json-key">"blood_group"</span>: <span class="json-str">"B+"</span>,
-  <span class="json-key">"academic_year"</span>: <span class="json-num">1</span>,
-  <span class="json-key">"class_section"</span>: <span class="json-num">2</span>,
-  <span class="json-key">"roll_number"</span>: <span class="json-str">"08"</span>
-}</pre>
-  </div>
-</div>
-
-<!-- API: List Students -->
-<div class="api-card">
-  <div class="api-card-header">
-    <div class="api-endpoint">
-      <span class="method method-get">GET</span>
-      <span>/api/list-students/</span>
-    </div>
-    <div class="api-meta">
-      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
-      <span class="meta-tag meta-format">application/json</span>
-    </div>
-  </div>
-  <div class="api-card-body">
-    <div class="api-desc"><strong>List Students API:</strong> Retrieves the student directory table with pagination, name/admission search, and class/section filters.</div>
-    <div class="block-title">Query Parameters</div>
-    <table>
-      <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><span class="field-name">search</span></td><td><span class="field-type">string</span></td><td>Search student name or admission number.</td></tr>
-        <tr><td><span class="field-name">class</span></td><td><span class="field-type">string/int</span></td><td>Filter by class name or class ID (e.g. <code>Class 6</code> or <code>1</code>).</td></tr>
-        <tr><td><span class="field-name">section</span></td><td><span class="field-type">string/int</span></td><td>Filter by section letter or section ID (e.g. <code>A</code>).</td></tr>
-        <tr><td><span class="field-name">status</span></td><td><span class="field-type">string</span></td><td><code>active</code>, <code>transferred</code>, <code>graduated</code>, <code>inactive</code>.</td></tr>
-        <tr><td><span class="field-name">academic_year</span></td><td><span class="field-type">string/int</span></td><td>Filter by academic year (e.g. <code>2025-2026</code>).</td></tr>
-        <tr><td><span class="field-name">page</span></td><td><span class="field-type">integer</span></td><td>Page number (default 10 items per page).</td></tr>
-      </tbody>
-    </table>
-    <div class="block-title">Response (200 OK)</div>
-    <pre>{
-  <span class="json-key">"count"</span>: <span class="json-num">245</span>,
-  <span class="json-key">"next"</span>: <span class="json-str">"http://127.0.0.1:8000/api/list-students/?page=2"</span>,
-  <span class="json-key">"previous"</span>: <span class="json-bool">null</span>,
-  <span class="json-key">"results"</span>: [
-    {
-      <span class="json-key">"id"</span>: <span class="json-num">101</span>,
-      <span class="json-key">"admission_number"</span>: <span class="json-str">"SAAPT-2025-001"</span>,
-      <span class="json-key">"full_name"</span>: <span class="json-str">"Aarav Sharma"</span>,
-      <span class="json-key">"class_display"</span>: <span class="json-str">"Class 6 - A"</span>,
-      <span class="json-key">"roll_number"</span>: <span class="json-str">"12"</span>,
-      <span class="json-key">"parent_name"</span>: <span class="json-str">"Rajesh Sharma"</span>,
-      <span class="json-key">"parent_mobile"</span>: <span class="json-str">"+919876500001"</span>,
-      <span class="json-key">"status"</span>: <span class="json-str">"active"</span>,
-      <span class="json-key">"admission_date"</span>: <span class="json-str">"2025-06-01"</span>
-    }
-  ]
-}</pre>
-  </div>
-</div>
-
-<!-- API: View Student Profile -->
-<div class="api-card">
-  <div class="api-card-header">
-    <div class="api-endpoint">
-      <span class="method method-get">GET</span>
-      <span>/api/view-student/&lt;id&gt;/</span>
-    </div>
-    <div class="api-meta">
-      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
-      <span class="meta-tag meta-format">application/json</span>
-    </div>
-  </div>
-  <div class="api-card-body">
-    <div class="api-desc"><strong>View Student Profile API:</strong> Returns complete student profile with parent info, documents, KPIs, and marksheet records.</div>
-    <div class="block-title">Response (200 OK)</div>
-    <pre>{
-  <span class="json-key">"id"</span>: <span class="json-num">101</span>,
-  <span class="json-key">"admission_number"</span>: <span class="json-str">"SAAPT-2025-001"</span>,
-  <span class="json-key">"full_name"</span>: <span class="json-str">"Aarav Sharma"</span>,
-  <span class="json-key">"date_of_birth"</span>: <span class="json-str">"2014-05-12"</span>,
+  <span class="json-key">"id"</span>: <span class="json-num">108</span>,
+  <span class="json-key">"admission_number"</span>: <span class="json-str">"A-1021"</span>,
+  <span class="json-key">"full_name"</span>: <span class="json-str">"Rohan Verma"</span>,
+  <span class="json-key">"date_of_birth"</span>: <span class="json-str">"2014-08-14"</span>,
   <span class="json-key">"gender"</span>: <span class="json-str">"Male"</span>,
   <span class="json-key">"blood_group"</span>: <span class="json-str">"O+"</span>,
-  <span class="json-key">"class_display"</span>: <span class="json-str">"Class 6 - A"</span>,
-  <span class="json-key">"roll_number"</span>: <span class="json-str">"12"</span>,
-  <span class="json-key">"status"</span>: <span class="json-str">"active"</span>,
-  <span class="json-key">"overall_grade"</span>: <span class="json-str">"A+"</span>,
-  <span class="json-key">"attendance_percentage"</span>: <span class="json-num">94.50</span>,
-  <span class="json-key">"parent_guardian"</span>: {
-    <span class="json-key">"father_name"</span>: <span class="json-str">"Rajesh Sharma"</span>,
-    <span class="json-key">"mother_name"</span>: <span class="json-str">"Priya Sharma"</span>,
-    <span class="json-key">"mobile_number"</span>: <span class="json-str">"+919876500001"</span>,
-    <span class="json-key">"email"</span>: <span class="json-str">"rajesh.sharma@example.com"</span>
-  }
+  <span class="json-key">"academic_year"</span>: <span class="json-str">"2026-2027"</span>,
+  <span class="json-key">"academic_year_name"</span>: <span class="json-str">"2026-2027"</span>,
+  <span class="json-key">"class"</span>: <span class="json-str">"Class 8"</span>,
+  <span class="json-key">"school_class"</span>: <span class="json-str">"Class 8"</span>,
+  <span class="json-key">"class_name"</span>: <span class="json-str">"Class 8"</span>,
+  <span class="json-key">"section"</span>: <span class="json-str">"A"</span>,
+  <span class="json-key">"section_name"</span>: <span class="json-str">"A"</span>,
+  <span class="json-key">"class_display"</span>: <span class="json-str">"Class 8 - A"</span>,
+  <span class="json-key">"roll_number"</span>: <span class="json-str">"14"</span>,
+  <span class="json-key">"admission_date"</span>: <span class="json-str">"2026-10-21"</span>,
+  <span class="json-key">"status"</span>: <span class="json-str">"Active"</span>,
+  <span class="json-key">"bus_route_info"</span>: <span class="json-str">"Bus Route 4"</span>,
+  <span class="json-key">"father_name"</span>: <span class="json-str">"Suresh Verma"</span>,
+  <span class="json-key">"mother_name"</span>: <span class="json-str">"Anita Verma"</span>,
+  <span class="json-key">"relation"</span>: <span class="json-str">"Father"</span>,
+  <span class="json-key">"mobile_number"</span>: <span class="json-str">"9840012345"</span>,
+  <span class="json-key">"alternate_mobile"</span>: <span class="json-str">"9840098765"</span>,
+  <span class="json-key">"parent_email"</span>: <span class="json-str">"suresh.verma@example.com"</span>,
+  <span class="json-key">"email"</span>: <span class="json-str">"suresh.verma@example.com"</span>,
+  <span class="json-key">"address"</span>: <span class="json-str">"12 Anna Salai, Chennai, TN"</span>,
+  <span class="json-key">"student_photo"</span>: <span class="json-str">"http://127.0.0.1:8000/media/students/photos/rohan.jpg"</span>,
+  <span class="json-key">"birth_certificate"</span>: <span class="json-str">"http://127.0.0.1:8000/media/students/documents/bc_108.pdf"</span>,
+  <span class="json-key">"transfer_certificate"</span>: <span class="json-bool">null</span>,
+  <span class="json-key">"aadhaar_card"</span>: <span class="json-str">"http://127.0.0.1:8000/media/students/documents/aadhaar_108.pdf"</span>
 }</pre>
   </div>
 </div>
 
-<!-- API: Edit Student -->
-<div class="api-card">
-  <div class="api-card-header">
-    <div class="api-endpoint">
-      <span class="method method-put">PUT</span> <span class="method method-patch">PATCH</span>
-      <span>/api/edit-student/&lt;id&gt;/</span>
-    </div>
-    <div class="api-meta">
-      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
-      <span class="meta-tag meta-format">multipart/form-data</span>
-    </div>
-  </div>
-  <div class="api-card-body">
-    <div class="api-desc"><strong>Edit Student API:</strong> Updates an existing student's record and parent information.</div>
-    <div class="block-title">Request Body Example (PATCH)</div>
-    <pre>{
-  <span class="json-key">"roll_number"</span>: <span class="json-str">"15"</span>,
-  <span class="json-key">"status"</span>: <span class="json-str">"active"</span>,
-  <span class="json-key">"mobile_number"</span>: <span class="json-str">"+919876599999"</span>
-}</pre>
-    <div class="block-title">Response (200 OK)</div>
-    <pre>{
-  <span class="json-key">"id"</span>: <span class="json-num">101</span>,
-  <span class="json-key">"full_name"</span>: <span class="json-str">"Aarav Sharma"</span>,
-  <span class="json-key">"roll_number"</span>: <span class="json-str">"15"</span>,
-  <span class="json-key">"status"</span>: <span class="json-str">"active"</span>
-}</pre>
-  </div>
-</div>
-
-<!-- API: Delete Student -->
-<div class="api-card">
-  <div class="api-card-header">
-    <div class="api-endpoint">
-      <span class="method method-delete">DELETE</span>
-      <span>/api/delete-student/&lt;id&gt;/</span>
-    </div>
-    <div class="api-meta">
-      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
-    </div>
-  </div>
-  <div class="api-card-body">
-    <div class="api-desc"><strong>Delete Student API:</strong> Permanently removes a student's profile and associated academic records from the database.</div>
-    <div class="block-title">Response</div>
-    <pre><span class="json-num">204</span> No Content (Empty Response Body)</pre>
-  </div>
-</div>
-
-<!-- API: Student Stats -->
+<!-- API: List, View, Edit, Delete Students -->
 <div class="api-card">
   <div class="api-card-header">
     <div class="api-endpoint">
       <span class="method method-get">GET</span>
-      <span>/api/student-stats/</span>
+      <span class="method method-put">PUT</span>
+      <span class="method method-patch">PATCH</span>
+      <span class="method method-delete">DELETE</span>
+      <span>/api/list-students/ &nbsp;|&nbsp; /api/view-student/&lt;id&gt;/ &nbsp;|&nbsp; /api/edit-student/&lt;id&gt;/ &nbsp;|&nbsp; /api/delete-student/&lt;id&gt;/</span>
     </div>
     <div class="api-meta">
       <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
-      <span class="meta-tag meta-format">application/json</span>
     </div>
   </div>
   <div class="api-card-body">
-    <div class="api-desc"><strong>Student Stats API:</strong> Returns dashboard KPI metrics including total student counts, active/transferred counts, and per-class enrollment breakdowns.</div>
-    <div class="block-title">Response (200 OK)</div>
+    <div class="api-desc">
+      <strong>List Students:</strong> <code>GET /api/list-students/?search=Rohan&class=Class 8&section=A&status=Active&page=1</code><br>
+      <strong>View Profile:</strong> <code>GET /api/view-student/108/</code> returns complete student dossier with academic records.<br>
+      <strong>Edit Student:</strong> <code>PUT /api/edit-student/108/</code> or <code>PATCH /api/edit-student/108/</code> updates details and parents.<br>
+      <strong>Delete Student:</strong> <code>DELETE /api/delete-student/108/</code> permanently deletes the student (204 No Content).
+    </div>
+    <div class="block-title">Edit Request Example (PATCH /api/edit-student/108/)</div>
+    <pre>{
+  <span class="json-key">"roll_number"</span>: <span class="json-str">"15"</span>,
+  <span class="json-key">"mobile_number"</span>: <span class="json-str">"9840099999"</span>,
+  <span class="json-key">"status"</span>: <span class="json-str">"Active"</span>
+}</pre>
+    <div class="block-title">Edit Response (200 OK)</div>
+    <pre>{
+  <span class="json-key">"id"</span>: <span class="json-num">108</span>,
+  <span class="json-key">"full_name"</span>: <span class="json-str">"Rohan Verma"</span>,
+  <span class="json-key">"roll_number"</span>: <span class="json-str">"15"</span>,
+  <span class="json-key">"mobile_number"</span>: <span class="json-str">"9840099999"</span>,
+  <span class="json-key">"status"</span>: <span class="json-str">"Active"</span>
+}</pre>
+  </div>
+</div>
+
+<!-- API: Student Analytics & Actions -->
+<div class="api-card">
+  <div class="api-card-header">
+    <div class="api-endpoint">
+      <span class="method method-get">GET</span>
+      <span class="method method-post">POST</span>
+      <span>/api/student-stats/ &nbsp;|&nbsp; /api/bulk-allocate-students/ &nbsp;|&nbsp; /api/export-students/</span>
+    </div>
+    <div class="api-meta">
+      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
+    </div>
+  </div>
+  <div class="api-card-body">
+    <div class="api-desc">
+      <strong>Student Stats:</strong> Returns enrollment KPI metrics, class-wise breakdown, and active tallies.<br>
+      <strong>Bulk Allocate:</strong> Moves selected student IDs to a target section in bulk.<br>
+      <strong>Export:</strong> Downloads CSV spreadsheet of student records.
+    </div>
+    <div class="block-title">GET /api/student-stats/ Response (200 OK)</div>
     <pre>{
   <span class="json-key">"total_students"</span>: <span class="json-num">450</span>,
   <span class="json-key">"active_students"</span>: <span class="json-num">420</span>,
   <span class="json-key">"transferred_students"</span>: <span class="json-num">12</span>,
   <span class="json-key">"graduated_students"</span>: <span class="json-num">15</span>,
-  <span class="json-key">"new_admissions_this_month"</span>: <span class="json-num">28</span>,
-  <span class="json-key">"class_breakdown"</span>: [
-    {
-      <span class="json-key">"id"</span>: <span class="json-num">1</span>,
-      <span class="json-key">"school_class__name"</span>: <span class="json-str">"Class 6"</span>,
-      <span class="json-key">"section__name"</span>: <span class="json-str">"A"</span>,
-      <span class="json-key">"max_strength"</span>: <span class="json-num">40</span>,
-      <span class="json-key">"active_count"</span>: <span class="json-num">38</span>
-    }
-  ]
-}</pre>
-  </div>
-</div>
-
-<!-- API: Bulk Allocate Students -->
-<div class="api-card">
-  <div class="api-card-header">
-    <div class="api-endpoint">
-      <span class="method method-post">POST</span>
-      <span>/api/bulk-allocate-students/</span>
-    </div>
-    <div class="api-meta">
-      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
-      <span class="meta-tag meta-format">application/json</span>
-    </div>
-  </div>
-  <div class="api-card-body">
-    <div class="api-desc"><strong>Bulk Allocate Students API:</strong> Atomically reallocates selected students to a new section, ensuring classroom capacity is not exceeded.</div>
-    <div class="block-title">Request Body</div>
-    <pre>{
-  <span class="json-key">"student_ids"</span>: [<span class="json-num">101</span>, <span class="json-num">102</span>, <span class="json-num">105</span>],
-  <span class="json-key">"target_class_section_id"</span>: <span class="json-num">3</span>
-}</pre>
-    <div class="block-title">Response (200 OK)</div>
-    <pre>{
-  <span class="json-key">"message"</span>: <span class="json-str">"Successfully moved 3 students to Class 7 - B."</span>,
-  <span class="json-key">"target_class_section"</span>: {
-    <span class="json-key">"id"</span>: <span class="json-num">3</span>,
-    <span class="json-key">"display_name"</span>: <span class="json-str">"Class 7 - B"</span>,
-    <span class="json-key">"current_strength"</span>: <span class="json-num">35</span>,
-    <span class="json-key">"max_strength"</span>: <span class="json-num">40</span>
-  }
-}</pre>
-  </div>
-</div>
-
-<!-- API: Export Students & ID Card -->
-<div class="api-card">
-  <div class="api-card-header">
-    <div class="api-endpoint">
-      <span class="method method-get">GET</span>
-      <span>/api/export-students/ & /api/student-id-card/&lt;id&gt;/</span>
-    </div>
-    <div class="api-meta">
-      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
-    </div>
-  </div>
-  <div class="api-card-body">
-    <div class="api-desc"><strong>Export Students:</strong> Generates CSV spreadsheet download.<br><strong>Student ID Card:</strong> Returns printable student badge information.</div>
-    <div class="block-title">Student ID Card Response (200 OK)</div>
-    <pre>{
-  <span class="json-key">"school_name"</span>: <span class="json-str">"SAAPT International Public School"</span>,
-  <span class="json-key">"student_name"</span>: <span class="json-str">"Aarav Sharma"</span>,
-  <span class="json-key">"admission_number"</span>: <span class="json-str">"SAAPT-2025-001"</span>,
-  <span class="json-key">"class_section"</span>: <span class="json-str">"Class 6 - A"</span>,
-  <span class="json-key">"roll_number"</span>: <span class="json-str">"12"</span>,
-  <span class="json-key">"blood_group"</span>: <span class="json-str">"O+"</span>,
-  <span class="json-key">"emergency_contact"</span>: <span class="json-str">"+919876500001"</span>,
-  <span class="json-key">"photo_url"</span>: <span class="json-str">"http://127.0.0.1:8000/media/students/photos/aarav.jpg"</span>
+  <span class="json-key">"new_admissions_this_month"</span>: <span class="json-num">28</span>
 }</pre>
   </div>
 </div>
 
 <div class="page-break"></div>
 
-<!-- SECTION 2: CLASS & SECTION ALLOCATION -->
+<!-- SECTION 6: CLASS & SECTION ALLOCATION -->
 <div class="section-header">
-  <div class="section-title">2. Class & Section Allocation (Action-Based APIs)</div>
+  <div class="section-title">6. Class & Section Allocation (Action-Based APIs)</div>
   <div class="section-badge">Base: /api/</div>
+</div>
+
+<div class="api-desc">
+  Manages physical classrooms, teacher assignments, and student seat limits (Capacity). Connects SchoolClass, Section, and AcademicYear models into assigned cohorts.
 </div>
 
 <!-- API: List Class Sections -->
@@ -613,7 +1221,7 @@ html_content = """<!DOCTYPE html>
   <div class="api-card-header">
     <div class="api-endpoint">
       <span class="method method-get">GET</span>
-      <span>/api/list-class-sections/</span>
+      <span>/api/list-class-sections/ &nbsp;or&nbsp; /api/class-sections/</span>
     </div>
     <div class="api-meta">
       <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
@@ -621,22 +1229,22 @@ html_content = """<!DOCTYPE html>
     </div>
   </div>
   <div class="api-card-body">
-    <div class="api-desc"><strong>List Class Sections API:</strong> Lists all allocated sections, assigned teachers, room numbers, and current vs. max student capacity.</div>
+    <div class="api-desc">Retrieves allocated sections, assigned teachers, room numbers, and current strength vs capacity limits.</div>
     <div class="block-title">Response (200 OK)</div>
     <pre>[
   {
     <span class="json-key">"id"</span>: <span class="json-num">1</span>,
     <span class="json-key">"academic_year"</span>: <span class="json-num">1</span>,
-    <span class="json-key">"academic_year_name"</span>: <span class="json-str">"2025-2026"</span>,
+    <span class="json-key">"academic_year_name"</span>: <span class="json-str">"2026-2027"</span>,
     <span class="json-key">"school_class"</span>: <span class="json-num">1</span>,
     <span class="json-key">"class_name"</span>: <span class="json-str">"Class 6"</span>,
     <span class="json-key">"section"</span>: <span class="json-num">1</span>,
     <span class="json-key">"section_name"</span>: <span class="json-str">"A"</span>,
+    <span class="json-key">"display_name"</span>: <span class="json-str">"Class 6 - A"</span>,
     <span class="json-key">"room_number"</span>: <span class="json-str">"Room 101"</span>,
     <span class="json-key">"class_teacher_name"</span>: <span class="json-str">"Mrs. Anjali Rao"</span>,
-    <span class="json-key">"max_strength"</span>: <span class="json-num">40</span>,
     <span class="json-key">"current_strength"</span>: <span class="json-num">38</span>,
-    <span class="json-key">"display_name"</span>: <span class="json-str">"Class 6 - A"</span>
+    <span class="json-key">"max_strength"</span>: <span class="json-num">40</span>
   }
 ]</pre>
   </div>
@@ -647,7 +1255,7 @@ html_content = """<!DOCTYPE html>
   <div class="api-card-header">
     <div class="api-endpoint">
       <span class="method method-post">POST</span>
-      <span>/api/add-class-section/</span>
+      <span>/api/add-class-section/ &nbsp;or&nbsp; /api/class-sections/</span>
     </div>
     <div class="api-meta">
       <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
@@ -655,12 +1263,12 @@ html_content = """<!DOCTYPE html>
     </div>
   </div>
   <div class="api-card-body">
-    <div class="api-desc"><strong>Add Class Section API:</strong> Configures a new class and section allocation record.</div>
-    <div class="block-title">Request Body</div>
+    <div class="api-desc">Configures a new class section allocation. Accepts string names or integer IDs for class, section, and academic year.</div>
+    <div class="block-title">Request Body Example</div>
     <pre>{
-  <span class="json-key">"academic_year"</span>: <span class="json-num">1</span>,
-  <span class="json-key">"school_class"</span>: <span class="json-num">2</span>,
-  <span class="json-key">"section"</span>: <span class="json-num">1</span>,
+  <span class="json-key">"academic_year"</span>: <span class="json-str">"2026-2027"</span>,
+  <span class="json-key">"school_class"</span>: <span class="json-str">"Class 7"</span>,
+  <span class="json-key">"section"</span>: <span class="json-str">"A"</span>,
   <span class="json-key">"room_number"</span>: <span class="json-str">"Room 204"</span>,
   <span class="json-key">"class_teacher_name"</span>: <span class="json-str">"Mr. Vikram Sen"</span>,
   <span class="json-key">"max_strength"</span>: <span class="json-num">45</span>
@@ -677,27 +1285,34 @@ html_content = """<!DOCTYPE html>
   </div>
 </div>
 
-<!-- API: Edit & Delete Class Section -->
+<!-- API: View, Edit, Delete, Students -->
 <div class="api-card">
   <div class="api-card-header">
     <div class="api-endpoint">
-      <span class="method method-put">PUT</span> <span class="method method-delete">DELETE</span>
-      <span>/api/edit-class-section/&lt;id&gt;/ & /api/delete-class-section/&lt;id&gt;/</span>
+      <span class="method method-get">GET</span>
+      <span class="method method-put">PUT</span>
+      <span class="method method-delete">DELETE</span>
+      <span>/api/view-class-section/&lt;id&gt;/ &nbsp;|&nbsp; /api/edit-class-section/&lt;id&gt;/ &nbsp;|&nbsp; /api/class-section-students/&lt;id&gt;/</span>
     </div>
     <div class="api-meta">
       <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
     </div>
   </div>
   <div class="api-card-body">
-    <div class="api-desc"><strong>Edit Class Section:</strong> Modifies room number, teacher, or capacity.<br><strong>Delete Class Section:</strong> Removes an empty class section allocation.</div>
-    <div class="block-title">Students in Section (GET /api/class-section-students/&lt;id&gt;/)</div>
+    <div class="api-desc">
+      <strong>View:</strong> <code>GET /api/view-class-section/1/</code> returns section details.<br>
+      <strong>Edit:</strong> <code>PUT /api/edit-class-section/1/</code> updates teacher, room, or capacity.<br>
+      <strong>Students in Section:</strong> <code>GET /api/class-section-students/1/</code> returns all enrolled students.<br>
+      <strong>Delete:</strong> <code>DELETE /api/delete-class-section/5/</code> removes an empty allocation record.
+    </div>
+    <div class="block-title">Students in Section (GET /api/class-section-students/1/ Response)</div>
     <pre>[
   {
     <span class="json-key">"id"</span>: <span class="json-num">101</span>,
     <span class="json-key">"admission_number"</span>: <span class="json-str">"SAAPT-2025-001"</span>,
     <span class="json-key">"full_name"</span>: <span class="json-str">"Aarav Sharma"</span>,
     <span class="json-key">"roll_number"</span>: <span class="json-str">"12"</span>,
-    <span class="json-key">"status"</span>: <span class="json-str">"active"</span>
+    <span class="json-key">"status"</span>: <span class="json-str">"Active"</span>
   }
 ]</pre>
   </div>
@@ -705,9 +1320,9 @@ html_content = """<!DOCTYPE html>
 
 <div class="page-break"></div>
 
-<!-- SECTION 3: AUTHENTICATION -->
+<!-- SECTION 7: AUTHENTICATION & SECURITY -->
 <div class="section-header">
-  <div class="section-title">3. Authentication & Password Security</div>
+  <div class="section-title">7. Authentication & Password Security</div>
   <div class="section-badge">Base: /api/auth/</div>
 </div>
 
@@ -724,7 +1339,7 @@ html_content = """<!DOCTYPE html>
     </div>
   </div>
   <div class="api-card-body">
-    <div class="api-desc"><strong>Forgot Password API (Step 1 - Ask Mail ID & Send OTP):</strong> Asks user for their registered email address and sends a secure 6-digit OTP code (valid for 10 minutes).</div>
+    <div class="api-desc"><strong>Forgot Password API (Step 1 - Ask Mail ID & Send OTP):</strong> Takes user's registered email address and sends a secure 6-digit OTP code (valid for 10 minutes).</div>
     <div class="block-title">Request Body</div>
     <pre>{
   <span class="json-key">"email"</span>: <span class="json-str">"user@saapt.com"</span>
@@ -750,7 +1365,7 @@ html_content = """<!DOCTYPE html>
     </div>
   </div>
   <div class="api-card-body">
-    <div class="api-desc"><strong>Verify OTP API (Step 2 - Verify Code):</strong> Validates the 6-digit code entered by the user. If correct, returns verification confirmation and reset token for step 3.</div>
+    <div class="api-desc"><strong>Verify OTP API (Step 2 - Verify Code):</strong> Validates the 6-digit OTP code entered by the user. If correct, returns a verification token for Step 3.</div>
     <div class="block-title">Request Body</div>
     <pre>{
   <span class="json-key">"email"</span>: <span class="json-str">"user@saapt.com"</span>,
@@ -778,7 +1393,7 @@ html_content = """<!DOCTYPE html>
     </div>
   </div>
   <div class="api-card-body">
-    <div class="api-desc"><strong>Reset Password API (Step 3 - Set New Password & Confirm):</strong> Takes the new password and confirmation along with the verified OTP or reset token to update the password.</div>
+    <div class="api-desc"><strong>Reset Password API (Step 3 - Set New Password & Confirm):</strong> Takes the new password, confirmation password, and reset token to update the password.</div>
     <div class="block-title">Request Body</div>
     <pre>{
   <span class="json-key">"email"</span>: <span class="json-str">"user@saapt.com"</span>,
@@ -793,12 +1408,12 @@ html_content = """<!DOCTYPE html>
   </div>
 </div>
 
-<!-- API: Login & Register & Profile -->
+<!-- API: Login & Register -->
 <div class="api-card">
   <div class="api-card-header">
     <div class="api-endpoint">
       <span class="method method-post">POST</span>
-      <span>/api/auth/login/ & /api/auth/register/</span>
+      <span>/api/auth/login/ &nbsp;&amp;&nbsp; /api/auth/register/</span>
     </div>
     <div class="api-meta">
       <span class="meta-tag meta-auth-no">No Auth Required</span>
@@ -806,7 +1421,7 @@ html_content = """<!DOCTYPE html>
     </div>
   </div>
   <div class="api-card-body">
-    <div class="api-desc"><strong>Login API:</strong> Log in via username or email.<br><strong>Register API:</strong> Staff user registration.</div>
+    <div class="api-desc"><strong>Login API:</strong> Authenticates via username or email and returns JWT access & refresh tokens.<br><strong>Register API:</strong> Staff account registration.</div>
     <div class="block-title">Login Request Body</div>
     <pre>{
   <span class="json-key">"username_or_email"</span>: <span class="json-str">"user@saapt.com"</span>,
@@ -825,50 +1440,6 @@ html_content = """<!DOCTYPE html>
     <span class="json-key">"refresh"</span>: <span class="json-str">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
   }
 }</pre>
-  </div>
-</div>
-
-<div class="page-break"></div>
-
-<!-- SECTION 4: MASTER LOOKUPS -->
-<div class="section-header">
-  <div class="section-title">4. Master Lookups & Dropdowns (Action-Based APIs)</div>
-  <div class="section-badge">Base: /api/</div>
-</div>
-
-<!-- API: Dropdowns -->
-<div class="api-card">
-  <div class="api-card-header">
-    <div class="api-endpoint">
-      <span class="method method-get">GET</span>
-      <span>/api/get-classes/ & /api/get-sections/ & /api/get-academic-years/</span>
-    </div>
-    <div class="api-meta">
-      <span class="meta-tag meta-auth-yes">Bearer Token Required</span>
-    </div>
-  </div>
-  <div class="api-card-body">
-    <div class="api-desc">Dropdown master data endpoints used for populating dropdown selections in forms and filter controls.</div>
-    <div class="block-title">Example: GET /api/get-classes/ Response (200 OK)</div>
-    <pre>[
-  { <span class="json-key">"id"</span>: <span class="json-num">1</span>, <span class="json-key">"name"</span>: <span class="json-str">"Class 6"</span>, <span class="json-key">"code"</span>: <span class="json-str">"CLS-6"</span>, <span class="json-key">"numeric_order"</span>: <span class="json-num">6</span> },
-  { <span class="json-key">"id"</span>: <span class="json-num">2</span>, <span class="json-key">"name"</span>: <span class="json-str">"Class 7"</span>, <span class="json-key">"code"</span>: <span class="json-str">"CLS-7"</span>, <span class="json-key">"numeric_order"</span>: <span class="json-num">7</span> }
-]</pre>
-    <div class="block-title">Example: GET /api/get-sections/ Response (200 OK)</div>
-    <pre>[
-  { <span class="json-key">"id"</span>: <span class="json-num">1</span>, <span class="json-key">"name"</span>: <span class="json-str">"A"</span> },
-  { <span class="json-key">"id"</span>: <span class="json-num">2</span>, <span class="json-key">"name"</span>: <span class="json-str">"B"</span> }
-]</pre>
-    <div class="block-title">Example: GET /api/get-academic-years/ Response (200 OK)</div>
-    <pre>[
-  {
-    <span class="json-key">"id"</span>: <span class="json-num">1</span>,
-    <span class="json-key">"year_name"</span>: <span class="json-str">"2025-2026"</span>,
-    <span class="json-key">"start_date"</span>: <span class="json-str">"2025-06-01"</span>,
-    <span class="json-key">"end_date"</span>: <span class="json-str">"2026-04-30"</span>,
-    <span class="json-key">"is_current"</span>: <span class="json-bool">true</span>
-  }
-]</pre>
   </div>
 </div>
 

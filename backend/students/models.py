@@ -55,6 +55,24 @@ class Section(models.Model):
         return self.name
 
 
+class BloodGroup(models.Model):
+    """
+    Master list of blood groups (A+, A-, B+, B-, O+, O-, AB+, AB-, etc.).
+    """
+    name = models.CharField(max_length=15, unique=True, help_text="e.g. A+, B+, O-")
+    code = models.CharField(max_length=20, blank=True, help_text="Optional code")
+    description = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = "Blood Group"
+        verbose_name_plural = "Blood Groups"
+
+    def __str__(self):
+        return self.name
+
+
 class ClassSection(models.Model):
     """
     Represents an allocated Class & Section for an academic year (Page 9 & 10).
