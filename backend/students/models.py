@@ -331,6 +331,24 @@ class Student(models.Model):
         return "Unallocated"
 
     @property
+    def section_name(self):
+        if self.class_section and self.class_section.section:
+            return self.class_section.section.name
+        return ""
+
+    @property
+    def class_name(self):
+        if self.class_section and self.class_section.school_class:
+            return self.class_section.school_class.name
+        return ""
+
+    @property
+    def academic_year_name(self):
+        if self.academic_year:
+            return self.academic_year.year_name
+        return ""
+
+    @property
     def parent_name(self):
         if self.parent_guardian:
             return self.parent_guardian.father_name or self.parent_guardian.mother_name

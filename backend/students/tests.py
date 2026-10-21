@@ -184,3 +184,66 @@ class StudentModuleTests(APITestCase):
         self.assertIn('total_students', response.data)
         self.assertIn('active_students', response.data)
         self.assertIn('class_breakdown', response.data)
+
+    def test_new_admission_with_string_academic_year_and_section(self):
+        """Test creating a new student submitting academic_year and section as strings"""
+        url = reverse('student-list')
+        payload = {
+            "full_name": "Kavya S",
+            "date_of_birth": "2013-08-20",
+            "gender": "Female",
+            "blood_group": "A+",
+            "academic_year": "2026-27",
+            "school_class": "Class 8",
+            "section": "A",
+            "roll_number": "Roll 15",
+            "father_name": "Suresh S",
+            "mobile_number": "98400 99999",
+            "address": "15, Anna Nagar, Chennai"
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['full_name'], "Kavya S")
+        self.assertEqual(response.data['academic_year_name'], "2026-27")
+        self.assertEqual(response.data['section_name'], "A")
+        self.assertEqual(response.data['class_name'], "Class 8")
+
+        # Verify DB entry
+        student = Student.objects.get(full_name="Kavya S")
+        self.assertEqual(student.academic_year.year_name, "2026-27")
+        self.assertEqual(student.class_section.section.name, "A")
+        self.assertEqual(student.class_section.school_class.name, "Class 8")
+
+    def test_new_admission_with_string_class_section(self):
+        """Test creating student passing class_section as combined string (e.g., 'Class 8-A')"""
+        url = reverse('student-list')
+        payload = {
+            "full_name": "Pooja V",
+            "date_of_birth": "2014-01-10",
+            "gender": "Female",
+            "academic_year": "2026-27",
+            "class_section": "Class 8-A",
+            "father_name": "Vijay",
+            "mobile_number": "98400 88888"
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        student = Student.objects.get(full_name="Pooja V")
+        self.assertEqual(student.class_section, self.cs_8a)
+        self.assertEqual(student.section_name, "A")
+
+    def test_create_class_section_with_strings(self):
+        """Test creating class section using string names for academic_year, school_class, section"""
+        url = reverse('class-section-list')
+        payload = {
+            "academic_year": "2026-27",
+            "school_class": "Class 9",
+            "section": "C",
+            "room_number": "Room 9C",
+            "max_strength": 40
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['section_name'], "C")
+        self.assertEqual(response.data['academic_year_name'], "2026-27")
+        self.assertEqual(response.data['class_name'], "Class 9")

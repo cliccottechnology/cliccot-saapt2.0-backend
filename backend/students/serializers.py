@@ -1,3 +1,4 @@
+from django.db import models
 from rest_framework import serializers
 from .models import (
     AcademicYear,
@@ -8,6 +9,128 @@ from .models import (
     Student,
     AcademicRecord
 )
+
+
+class AcademicYearRelatedField(serializers.Field):
+    """
+    Accepts AcademicYear ID (int/str), year_name (str e.g. '2026-27'), or AcademicYear instance.
+    """
+    def to_internal_value(self, data):
+        if not data:
+            raise serializers.ValidationError("This field is required.")
+        if isinstance(data, AcademicYear):
+            return data
+        if isinstance(data, int) or (isinstance(data, str) and data.isdigit()):
+            try:
+                return AcademicYear.objects.get(pk=int(data))
+            except AcademicYear.DoesNotExist:
+                raise serializers.ValidationError(f"AcademicYear with id={data} does not exist.")
+        elif isinstance(data, str):
+            val = data.strip()
+            ay = AcademicYear.objects.filter(year_name__iexact=val).first()
+            if not ay:
+                ay = AcademicYear.objects.create(year_name=val, is_current=True)
+            return ay
+        raise serializers.ValidationError("Invalid academic_year. Expected integer ID or year string (e.g. '2026-27').")
+
+    def to_representation(self, value):
+        return value.id if hasattr(value, 'id') else value
+
+
+class SectionRelatedField(serializers.Field):
+    """
+    Accepts Section ID (int/str), section name (str e.g. 'A', 'B'), or Section instance.
+    """
+    def to_internal_value(self, data):
+        if not data:
+            raise serializers.ValidationError("This field is required.")
+        if isinstance(data, Section):
+            return data
+        if isinstance(data, int) or (isinstance(data, str) and data.isdigit()):
+            try:
+                return Section.objects.get(pk=int(data))
+            except Section.DoesNotExist:
+                raise serializers.ValidationError(f"Section with id={data} does not exist.")
+        elif isinstance(data, str):
+            val = data.strip().upper()
+            sec, _ = Section.objects.get_or_create(name=val)
+            return sec
+        raise serializers.ValidationError("Invalid section. Expected integer ID or section name (e.g. 'A').")
+
+    def to_representation(self, value):
+        return value.id if hasattr(value, 'id') else value
+
+
+class SchoolClassRelatedField(serializers.Field):
+    """
+    Accepts SchoolClass ID (int/str), class name (e.g. 'Class 8', '8'), or SchoolClass instance.
+    """
+    def to_internal_value(self, data):
+        if not data:
+            raise serializers.ValidationError("This field is required.")
+        if isinstance(data, SchoolClass):
+            return data
+        if isinstance(data, int) or (isinstance(data, str) and data.isdigit()):
+            try:
+                return SchoolClass.objects.get(pk=int(data))
+            except SchoolClass.DoesNotExist:
+                pass
+        if isinstance(data, str):
+            val = data.strip()
+            sc = SchoolClass.objects.filter(
+                models.Q(name__iexact=val) |
+                models.Q(code__iexact=val) |
+                models.Q(name__iexact=f"Class {val}")
+            ).first()
+            if sc:
+                return sc
+            sc, _ = SchoolClass.objects.get_or_create(name=val)
+            return sc
+        raise serializers.ValidationError("Invalid school class. Expected integer ID or class name (e.g. 'Class 8').")
+
+    def to_representation(self, value):
+        return value.id if hasattr(value, 'id') else value
+
+
+class ClassSectionRelatedField(serializers.Field):
+    """
+    Accepts ClassSection ID (int/str), or display string (e.g. 'Class 8-A' or '8-A'),
+    or ClassSection instance.
+    """
+    def to_internal_value(self, data):
+        if not data:
+            return None
+        if isinstance(data, ClassSection):
+            return data
+        if isinstance(data, int) or (isinstance(data, str) and data.isdigit()):
+            try:
+                return ClassSection.objects.get(pk=int(data))
+            except ClassSection.DoesNotExist:
+                raise serializers.ValidationError(f"ClassSection with id={data} does not exist.")
+        elif isinstance(data, str):
+            val = data.strip()
+            if '-' in val:
+                parts = val.split('-', 1)
+                c_part, s_part = parts[0].strip(), parts[1].strip()
+                cs = ClassSection.objects.filter(
+                    (models.Q(school_class__name__iexact=c_part) |
+                     models.Q(school_class__code__iexact=c_part) |
+                     models.Q(school_class__name__iexact=f"Class {c_part}")) &
+                    models.Q(section__name__iexact=s_part)
+                ).first()
+                if cs:
+                    return cs
+            else:
+                cs = ClassSection.objects.filter(section__name__iexact=val).first()
+                if cs:
+                    return cs
+            raise serializers.ValidationError(
+                f"ClassSection '{val}' not found. Please provide valid ClassSection ID or format like 'Class 8-A'."
+            )
+        raise serializers.ValidationError("Invalid class_section. Expected integer ID or name (e.g. 'Class 8-A').")
+
+    def to_representation(self, value):
+        return value.id if hasattr(value, 'id') else value
 
 
 class AcademicYearSerializer(serializers.ModelSerializer):
@@ -31,8 +154,12 @@ class SectionSerializer(serializers.ModelSerializer):
 class ClassSectionSerializer(serializers.ModelSerializer):
     """
     Serializer for Class & Section Allocation (Page 9 & 10).
-    Includes calculated current strength, maximum strength, and display labels.
+    Supports academic_year, school_class, and section as IDs or Strings.
     """
+    academic_year = AcademicYearRelatedField()
+    school_class = SchoolClassRelatedField()
+    section = SectionRelatedField()
+
     class_name = serializers.CharField(source='school_class.name', read_only=True)
     section_name = serializers.CharField(source='section.name', read_only=True)
     academic_year_name = serializers.CharField(source='academic_year.year_name', read_only=True)
@@ -109,6 +236,8 @@ class StudentListSerializer(serializers.ModelSerializer):
     Columns: ADM NO, STUDENT, CLASS, PARENT, MOBILE, STATUS, ACTION.
     """
     class_display = serializers.CharField(read_only=True)
+    class_name = serializers.CharField(read_only=True)
+    section_name = serializers.CharField(read_only=True)
     parent_name = serializers.CharField(read_only=True)
     parent_mobile = serializers.CharField(read_only=True)
     academic_year_name = serializers.CharField(source='academic_year.year_name', read_only=True)
@@ -126,6 +255,8 @@ class StudentListSerializer(serializers.ModelSerializer):
             'academic_year_name',
             'class_section',
             'class_display',
+            'class_name',
+            'section_name',
             'roll_number',
             'parent_name',
             'parent_mobile',
@@ -144,6 +275,9 @@ class StudentDetailSerializer(serializers.ModelSerializer):
     academic_records = AcademicRecordSerializer(many=True, read_only=True)
     class_section_details = ClassSectionSerializer(source='class_section', read_only=True)
     class_display = serializers.CharField(read_only=True)
+    class_name = serializers.CharField(read_only=True)
+    section_name = serializers.CharField(read_only=True)
+    academic_year_name = serializers.CharField(source='academic_year.year_name', read_only=True)
     parent_name = serializers.CharField(read_only=True)
     parent_mobile = serializers.CharField(read_only=True)
 
@@ -158,9 +292,12 @@ class StudentDetailSerializer(serializers.ModelSerializer):
             'blood_group',
             'admission_date',
             'academic_year',
+            'academic_year_name',
             'class_section',
             'class_section_details',
             'class_display',
+            'class_name',
+            'section_name',
             'roll_number',
             'status',
             'bus_route_info',
@@ -184,7 +321,17 @@ class StudentCreateUpdateSerializer(serializers.ModelSerializer):
     """
     Serializer for New Admission dialog (Step 1, Step 2, Step 3) and Profile Editing.
     Supports atomic creation of ParentGuardian record and file attachments.
+    Accepts academic_year as string ('2026-27') or integer ID.
+    Accepts section as string ('A') or class_section as ('Class 8-A' or ID).
     """
+    academic_year = AcademicYearRelatedField(required=True)
+    class_section = ClassSectionRelatedField(required=False, allow_null=True)
+
+    # Optional string helper inputs directly from form:
+    section = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    school_class = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    class_name = serializers.CharField(write_only=True, required=False, allow_blank=True)
+
     # Parent details directly in payload for seamless Step 1-3 form submission
     father_name = serializers.CharField(write_only=True, required=False, allow_blank=True)
     mother_name = serializers.CharField(write_only=True, required=False, allow_blank=True)
@@ -206,6 +353,9 @@ class StudentCreateUpdateSerializer(serializers.ModelSerializer):
             'admission_date',
             'academic_year',
             'class_section',
+            'section',
+            'school_class',
+            'class_name',
             'roll_number',
             'status',
             'bus_route_info',
@@ -229,7 +379,46 @@ class StudentCreateUpdateSerializer(serializers.ModelSerializer):
             'academic_year': {'required': True},
         }
 
+    def _resolve_class_section(self, validated_data, instance=None):
+        section_str = validated_data.pop('section', '').strip()
+        class_str = (validated_data.pop('school_class', '') or validated_data.pop('class_name', '')).strip()
+
+        # If class_section is explicitly provided, it takes precedence
+        if validated_data.get('class_section'):
+            return
+
+        ay = validated_data.get('academic_year') or (instance.academic_year if instance else None)
+
+        if section_str or class_str:
+            sec_obj = None
+            if section_str:
+                sec_obj, _ = Section.objects.get_or_create(name=section_str.upper())
+
+            cls_obj = None
+            if class_str:
+                cls_obj = SchoolClass.objects.filter(
+                    models.Q(name__iexact=class_str) |
+                    models.Q(code__iexact=class_str) |
+                    models.Q(name__iexact=f"Class {class_str}")
+                ).first()
+                if not cls_obj:
+                    cls_obj, _ = SchoolClass.objects.get_or_create(name=class_str)
+
+            if cls_obj and sec_obj and ay:
+                cs_obj, _ = ClassSection.objects.get_or_create(
+                    academic_year=ay,
+                    school_class=cls_obj,
+                    section=sec_obj
+                )
+                validated_data['class_section'] = cs_obj
+            elif sec_obj and ay:
+                cs_obj = ClassSection.objects.filter(academic_year=ay, section=sec_obj).first()
+                if cs_obj:
+                    validated_data['class_section'] = cs_obj
+
     def create(self, validated_data):
+        self._resolve_class_section(validated_data)
+
         parent_fields = {
             'father_name': validated_data.pop('father_name', ''),
             'mother_name': validated_data.pop('mother_name', ''),
@@ -249,6 +438,8 @@ class StudentCreateUpdateSerializer(serializers.ModelSerializer):
         return student
 
     def update(self, instance, validated_data):
+        self._resolve_class_section(validated_data, instance=instance)
+
         parent_fields = {}
         for key in ['father_name', 'mother_name', 'relation', 'mobile_number', 'alternate_mobile', 'address']:
             if key in validated_data:
@@ -268,6 +459,14 @@ class StudentCreateUpdateSerializer(serializers.ModelSerializer):
                     instance.parent_guardian = parent
 
         return super().update(instance, validated_data)
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['academic_year_name'] = instance.academic_year_name
+        ret['section_name'] = instance.section_name
+        ret['class_name'] = instance.class_name
+        ret['class_display'] = instance.class_display
+        return ret
 
 
 class BulkAllocateStudentsSerializer(serializers.Serializer):
