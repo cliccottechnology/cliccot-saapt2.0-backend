@@ -8,7 +8,8 @@ from .models import (
     ClassSection,
     ParentGuardian,
     Student,
-    AcademicRecord
+    AcademicRecord,
+    Room
 )
 
 
@@ -626,3 +627,61 @@ class StudentIDCardSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(obj.student_photo.url)
             return obj.student_photo.url
         return None
+
+
+from .models import Room
+
+
+class RoomSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Classroom / Room Master (Add/Edit/View/Delete)
+    """
+    room_type_display = serializers.CharField(source='get_room_type_display', read_only=True)
+    institution_type_display = serializers.CharField(source='get_institution_type_display', read_only=True)
+
+    class Meta:
+        model = Room
+        fields = [
+            'id',
+            'room_name',
+            'room_code',
+            'room_type',
+            'room_type_display',
+            'institution_type',
+            'institution_type_display',
+            'building',
+            'floor',
+            'capacity',
+            'is_active',
+            'description',
+            'created_at',
+            'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+class RoomSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Classroom / Room Master (Add/Edit/View/Delete)
+    """
+    room_type_display = serializers.CharField(source='get_room_type_display', read_only=True)
+    institution_type_display = serializers.CharField(source='get_institution_type_display', read_only=True)
+
+    class Meta:
+        model = Room
+        fields = [
+            'id',
+            'room_name',
+            'room_code',
+            'room_type',
+            'room_type_display',
+            'institution_type',
+            'institution_type_display',
+            'building',
+            'floor',
+            'capacity',
+            'is_active',
+            'description',
+            'created_at',
+            'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']

@@ -381,7 +381,7 @@ class Student(models.Model):
 
 class AcademicRecord(models.Model):
     """
-    Academic mark records for student profile (Page 8 - Academic records · Term 1).
+    Academic mark records for student profile (Page 8 - Academic records A� Term 1).
     Subject, Marks, Max Marks, Grade (e.g., Tamil: 88/100 -> A).
     """
     student = models.ForeignKey(
@@ -428,3 +428,192 @@ class AcademicRecord(models.Model):
         if not self.grade:
             self.grade = self.calculate_grade()
         super().save(*args, **kwargs)
+
+
+class Room(models.Model):
+    """
+    Common Room / Classroom / Lab / Hall master for all institution types
+    (School, College, Polytechnic, Institute, ITI).
+    """
+    class RoomType(models.TextChoices):
+        CLASSROOM = 'CLASSROOM', 'Classroom'
+        LECTURE_HALL = 'LECTURE_HALL', 'Lecture Hall'
+        LABORATORY = 'LABORATORY', 'Laboratory'
+        COMPUTER_LAB = 'COMPUTER_LAB', 'Computer Lab'
+        WORKSHOP = 'WORKSHOP', 'Workshop'
+        LIBRARY = 'LIBRARY', 'Library'
+        OFFICE = 'OFFICE', 'Office'
+        MEETING_ROOM = 'MEETING_ROOM', 'Meeting Room'
+        EXAM_HALL = 'EXAM_HALL', 'Examination Hall'
+        AUDITORIUM = 'AUDITORIUM', 'Auditorium'
+        STAFF_ROOM = 'STAFF_ROOM', 'Staff Room'
+        PRINCIPAL_ROOM = 'PRINCIPAL_ROOM', 'Principal/Head Room'
+        COUNSELING_ROOM = 'COUNSELING_ROOM', 'Counseling Room'
+        FIRST_AID_ROOM = 'FIRST_AID_ROOM', 'First Aid Room'
+        SPORTS_ROOM = 'SPORTS_ROOM', 'Sports Room'
+        MULTIPURPOSE_HALL = 'MULTIPURPOSE_HALL', 'Multipurpose Hall'
+        STORE_ROOM = 'STORE_ROOM', 'Store Room'
+        SERVER_ROOM = 'SERVER_ROOM', 'Server Room'
+        PLACEMENT_CELL = 'PLACEMENT_CELL', 'Placement Cell'
+        WASHROOM = 'WASHROOM', 'Washroom'
+        OTHER = 'OTHER', 'Other'
+
+    class InstitutionType(models.TextChoices):
+        SCHOOL = 'SCHOOL', 'School'
+        COLLEGE = 'COLLEGE', 'College'
+        POLYTECHNIC = 'POLYTECHNIC', 'Polytechnic'
+        INSTITUTE = 'INSTITUTE', 'Institute'
+        ITI = 'ITI', 'ITI'
+        TRAINING_CENTER = 'TRAINING_CENTER', 'Training Center'
+        COMMON = 'COMMON', 'Common / All'
+
+    room_name = models.CharField(
+        max_length=150,
+        help_text="Display name e.g. Class 10 - A, Computer Lab 1, Lecture Hall 2"
+    )
+    room_code = models.CharField(
+        max_length=40,
+        unique=True,
+        db_index=True,
+        help_text="Unique code e.g. ROOM_101, LAB_101, HALL_101"
+    )
+    room_type = models.CharField(
+        max_length=30,
+        choices=RoomType.choices,
+        default=RoomType.CLASSROOM,
+        help_text="Category of the room"
+    )
+    institution_type = models.CharField(
+        max_length=30,
+        choices=InstitutionType.choices,
+        default=InstitutionType.COMMON,
+        blank=True,
+        help_text="Intended for School/College/Polytechnic/ITI/Institute"
+    )
+    building = models.CharField(
+        max_length=80,
+        blank=True,
+        help_text="Building/Block name e.g. Main Block, North Block"
+    )
+    floor = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        help_text="Floor number e.g. 0, 1, 2"
+    )
+    capacity = models.PositiveIntegerField(
+        default=0,
+        help_text="Seating capacity"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        db_index=True,
+        help_text="Mark inactive if not in use"
+    )
+    description = models.TextField(
+        blank=True,
+        help_text="Optional notes about this room"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['building', 'floor', 'room_code']
+        verbose_name = "Classroom / Room"
+        verbose_name_plural = "Classrooms / Rooms"
+
+    def __str__(self):
+        return f"{self.room_code} - {self.room_name} ({self.get_room_type_display()})"
+
+class Room(models.Model):
+    """
+    Common Room / Classroom / Lab / Hall master for all institution types
+    (School, College, Polytechnic, Institute, ITI).
+    """
+    class RoomType(models.TextChoices):
+        CLASSROOM = 'CLASSROOM', 'Classroom'
+        LECTURE_HALL = 'LECTURE_HALL', 'Lecture Hall'
+        LABORATORY = 'LABORATORY', 'Laboratory'
+        COMPUTER_LAB = 'COMPUTER_LAB', 'Computer Lab'
+        WORKSHOP = 'WORKSHOP', 'Workshop'
+        LIBRARY = 'LIBRARY', 'Library'
+        OFFICE = 'OFFICE', 'Office'
+        MEETING_ROOM = 'MEETING_ROOM', 'Meeting Room'
+        EXAM_HALL = 'EXAM_HALL', 'Examination Hall'
+        AUDITORIUM = 'AUDITORIUM', 'Auditorium'
+        STAFF_ROOM = 'STAFF_ROOM', 'Staff Room'
+        PRINCIPAL_ROOM = 'PRINCIPAL_ROOM', 'Principal/Head Room'
+        COUNSELING_ROOM = 'COUNSELING_ROOM', 'Counseling Room'
+        FIRST_AID_ROOM = 'FIRST_AID_ROOM', 'First Aid Room'
+        SPORTS_ROOM = 'SPORTS_ROOM', 'Sports Room'
+        MULTIPURPOSE_HALL = 'MULTIPURPOSE_HALL', 'Multipurpose Hall'
+        STORE_ROOM = 'STORE_ROOM', 'Store Room'
+        SERVER_ROOM = 'SERVER_ROOM', 'Server Room'
+        PLACEMENT_CELL = 'PLACEMENT_CELL', 'Placement Cell'
+        WASHROOM = 'WASHROOM', 'Washroom'
+        OTHER = 'OTHER', 'Other'
+
+    class InstitutionType(models.TextChoices):
+        SCHOOL = 'SCHOOL', 'School'
+        COLLEGE = 'COLLEGE', 'College'
+        POLYTECHNIC = 'POLYTECHNIC', 'Polytechnic'
+        INSTITUTE = 'INSTITUTE', 'Institute'
+        ITI = 'ITI', 'ITI'
+        TRAINING_CENTER = 'TRAINING_CENTER', 'Training Center'
+        COMMON = 'COMMON', 'Common / All'
+
+    room_name = models.CharField(
+        max_length=150,
+        help_text="Display name e.g. Class 10 - A, Computer Lab 1, Lecture Hall 2"
+    )
+    room_code = models.CharField(
+        max_length=40,
+        unique=True,
+        db_index=True,
+        help_text="Unique code e.g. ROOM_101, LAB_101, HALL_101"
+    )
+    room_type = models.CharField(
+        max_length=30,
+        choices=RoomType.choices,
+        default=RoomType.CLASSROOM,
+        help_text="Category of the room"
+    )
+    institution_type = models.CharField(
+        max_length=30,
+        choices=InstitutionType.choices,
+        default=InstitutionType.COMMON,
+        blank=True,
+        help_text="Intended for School/College/Polytechnic/ITI/Institute"
+    )
+    building = models.CharField(
+        max_length=80,
+        blank=True,
+        help_text="Building/Block name e.g. Main Block, North Block"
+    )
+    floor = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        help_text="Floor number e.g. 0, 1, 2"
+    )
+    capacity = models.PositiveIntegerField(
+        default=0,
+        help_text="Seating capacity"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        db_index=True,
+        help_text="Mark inactive if not in use"
+    )
+    description = models.TextField(
+        blank=True,
+        help_text="Optional notes about this room"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['building', 'floor', 'room_code']
+        verbose_name = "Classroom / Room"
+        verbose_name_plural = "Classrooms / Rooms"
+
+    def __str__(self):
+        return f"{self.room_code} - {self.room_name} ({self.get_room_type_display()})"

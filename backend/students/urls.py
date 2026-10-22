@@ -6,7 +6,8 @@ from .views import (
     SchoolClassViewSet,
     SectionViewSet,
     AcademicYearViewSet,
-    BloodGroupViewSet
+    BloodGroupViewSet,
+    RoomViewSet
 )
 
 router = DefaultRouter()
@@ -16,6 +17,8 @@ router.register(r'classes', SchoolClassViewSet, basename='school-class')
 router.register(r'sections', SectionViewSet, basename='section')
 router.register(r'academic-years', AcademicYearViewSet, basename='academic-year')
 router.register(r'blood-groups', BloodGroupViewSet, basename='blood-group')
+router.register(r'rooms', RoomViewSet, basename='room')
+router.register(r'rooms', RoomViewSet, basename='room')
 
 # Explicit, descriptive action-based endpoints
 urlpatterns = [
@@ -71,6 +74,13 @@ urlpatterns = [
     path('view-blood-group/<int:pk>/', BloodGroupViewSet.as_view({'get': 'retrieve'}), name='view_blood_group'),
     path('edit-blood-group/<int:pk>/', BloodGroupViewSet.as_view({'put': 'update', 'patch': 'partial_update'}), name='edit_blood_group'),
     path('delete-blood-group/<int:pk>/', BloodGroupViewSet.as_view({'delete': 'destroy'}), name='delete_blood_group'),
+
+    # --- Room / Classroom / Hall CRUD APIs ---
+    path('list-rooms/', RoomViewSet.as_view({'get': 'list'}), name='list_rooms'),
+    path('add-room/', RoomViewSet.as_view({'post': 'create'}), name='add_room'),
+    path('view-room/<int:pk>/', RoomViewSet.as_view({'get': 'retrieve'}), name='view_room'),
+    path('edit-room/<int:pk>/', RoomViewSet.as_view({'put': 'update', 'patch': 'partial_update'}), name='edit_room'),
+    path('delete-room/<int:pk>/', RoomViewSet.as_view({'delete': 'destroy'}), name='delete_room'),
 
     # Default router URLs (for standard REST conventions)
     path('', include(router.urls)),

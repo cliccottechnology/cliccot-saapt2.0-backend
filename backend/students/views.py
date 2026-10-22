@@ -16,7 +16,8 @@ from .models import (
     ClassSection,
     ParentGuardian,
     Student,
-    AcademicRecord
+    AcademicRecord,
+    Room
 )
 from .serializers import (
     AcademicYearSerializer,
@@ -30,7 +31,8 @@ from .serializers import (
     BulkAllocateStudentsSerializer,
     StudentIDCardSerializer,
     AcademicRecordSerializer,
-    ParentGuardianSerializer
+    ParentGuardianSerializer,
+    RoomSerializer
 )
 
 
@@ -318,7 +320,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get', 'post'], url_path='academic-records')
     def academic_records(self, request, pk=None):
         """
-        List or record academic marks for this student (Page 8 - Academic records · Term 1).
+        List or record academic marks for this student (Page 8 - Academic records A� Term 1).
         """
         student = self.get_object()
 
@@ -335,3 +337,188 @@ class StudentViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save(student=student)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class RoomViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for managing Classrooms / Rooms / Labs / Halls.
+    Same CRUD pattern as Class, Section, Academic Year.
+    """
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None
+
+    def get_queryset(self):
+        qs = Room.objects.all()
+
+        # Filter by Room Type
+        room_type = self.request.query_params.get('room_type')
+        if room_type:
+            qs = qs.filter(room_type__iexact=room_type)
+
+        # Filter by Institution Type
+        institution_type = self.request.query_params.get('institution_type')
+        if institution_type:
+            qs = qs.filter(institution_type__iexact=institution_type)
+
+        # Filter by Building
+        building = self.request.query_params.get('building')
+        if building:
+            qs = qs.filter(building__icontains=building)
+
+        # Filter by Active Status
+        is_active = self.request.query_params.get('is_active')
+        if is_active is not None:
+            if str(is_active).lower() in ['true', '1', 'yes']:
+                qs = qs.filter(is_active=True)
+            elif str(is_active).lower() in ['false', '0', 'no']:
+                qs = qs.filter(is_active=False)
+
+        # Search by room name or room code
+        search = self.request.query_params.get('search')
+        if search:
+            qs = qs.filter(
+                Q(room_name__icontains=search) |
+                Q(room_code__icontains=search)
+            )
+
+        return qs
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            {
+                "message": "Class room added successfully",
+                **serializer.data,
+            },
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(
+            {
+                "message": "Class room updated successfully",
+                **serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {
+                "message": "Class room deleted successfully",
+            },
+            status=status.HTTP_200_OK,
+        )
+
+class RoomViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for managing Classrooms / Rooms / Labs / Halls.
+    Same CRUD pattern as Class, Section, Academic Year.
+    """
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None
+
+    def get_queryset(self):
+        qs = Room.objects.all()
+
+        # Filter by Room Type
+        room_type = self.request.query_params.get('room_type')
+        if room_type:
+            qs = qs.filter(room_type__iexact=room_type)
+
+        # Filter by Institution Type
+        institution_type = self.request.query_params.get('institution_type')
+        if institution_type:
+            qs = qs.filter(institution_type__iexact=institution_type)
+
+        # Filter by Building
+        building = self.request.query_params.get('building')
+        if building:
+            qs = qs.filter(building__icontains=building)
+
+        # Filter by Active Status
+        is_active = self.request.query_params.get('is_active')
+        if is_active is not None:
+            if str(is_active).lower() in ['true', '1', 'yes']:
+                qs = qs.filter(is_active=True)
+            elif str(is_active).lower() in ['false', '0', 'no']:
+                qs = qs.filter(is_active=False)
+
+        # Search by room name or room code
+        search = self.request.query_params.get('search')
+        if search:
+            qs = qs.filter(
+                Q(room_name__icontains=search) |
+                Q(room_code__icontains=search)
+            )
+
+        return qs
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            {
+                "message": "Class room added successfully",
+                **serializer.data,
+            },
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(
+            {
+                "message": "Class room updated successfully",
+                **serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {
+                "message": "Class room deleted successfully",
+            },
+            status=status.HTTP_200_OK,
+        )
